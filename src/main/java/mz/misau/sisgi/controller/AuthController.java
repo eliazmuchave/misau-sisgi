@@ -2,15 +2,14 @@ package mz.misau.sisgi.controller;
 
 import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.entity.User;
-import mz.misau.sisgi.entity.request.LoginRequest;
-import mz.misau.sisgi.entity.request.LoginResponse;
+import mz.misau.sisgi.entity.dto.LoginRequest;
+import mz.misau.sisgi.entity.dto.LoginResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

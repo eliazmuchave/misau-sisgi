@@ -1,4 +1,4 @@
-package mz.misau.sisgi.entity.request;
+package mz.misau.sisgi.entity.dto;
 
 import lombok.Data;
 

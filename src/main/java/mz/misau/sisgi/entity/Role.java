@@ -14,10 +14,10 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Column(name = "role_name", nullable = false)
+    private String roleName;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
 

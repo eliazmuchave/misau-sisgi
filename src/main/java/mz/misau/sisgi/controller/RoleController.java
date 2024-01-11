@@ -2,6 +2,7 @@ package mz.misau.sisgi.controller;
 
 import mz.misau.sisgi.entity.Role;
 import mz.misau.sisgi.entity.dto.RoleDTO;
+import mz.misau.sisgi.entity.dto.RoleResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
 import mz.misau.sisgi.service.RoleService;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ public class RoleController {
      @PostMapping
     public ResponseEntity addUser(@RequestBody RoleDTO roleDTO) throws URISyntaxException {
 
-        Role addedRole = roleService.addNewRole(roleDTO);
-         return ResponseEntity.created(new URI("/user" + addedRole.getId())).body(addedRole);
+        RoleResponseDTO responseDTO = roleService.addNewRole(roleDTO);
+         return ResponseEntity.created(new URI("/roles" + responseDTO.getId())).body(responseDTO);
 
 
      }

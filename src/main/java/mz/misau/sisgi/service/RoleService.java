@@ -2,6 +2,7 @@ package mz.misau.sisgi.service;
 
 import mz.misau.sisgi.entity.Role;
 import mz.misau.sisgi.entity.dto.RoleDTO;
+import mz.misau.sisgi.entity.dto.RoleResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,25 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public Role addNewRole(RoleDTO roleDTO) {
+    public RoleResponseDTO addNewRole(RoleDTO roleDTO) {
 
+        Role roleToSave = convertFromDTO(roleDTO);
+        Role role = roleRepository.save(roleToSave);
+        return convertToResponseDTO(role);
+    }
+
+    public Role convertFromDTO(RoleDTO roleDTO) {
         Role role = new Role();
         role.setRoleName(roleDTO.getRoleName());
-        return roleRepository.save(role);
+        return role;
+    }
+
+    public RoleResponseDTO convertToResponseDTO(Role role) {
+
+        RoleResponseDTO response = new RoleResponseDTO();
+        response.setRoleName(role.getRoleName());
+        response.setId(role.getId());
+        return response;
+
     }
 }

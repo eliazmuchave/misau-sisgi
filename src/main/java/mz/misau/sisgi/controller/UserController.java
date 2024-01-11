@@ -2,6 +2,7 @@ package mz.misau.sisgi.controller;
 
 import mz.misau.sisgi.entity.User;
 import mz.misau.sisgi.entity.dto.UserDTO;
+import mz.misau.sisgi.entity.dto.UserResponseDTO;
 import mz.misau.sisgi.repository.UserRepository;
 import mz.misau.sisgi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity createUser(@RequestBody UserDTO userDTO) throws URISyntaxException {
-        User savedUser = userService.addNewUser(userDTO);
-        return ResponseEntity.created(new URI("/user" + savedUser.getId())).body(savedUser);
+        UserResponseDTO userResponseDTO = userService.addNewUser(userDTO);
+
+        return ResponseEntity.created(new URI("/user" + userResponseDTO.getId())).body(userResponseDTO);
     }
 
     @GetMapping("/{id}")

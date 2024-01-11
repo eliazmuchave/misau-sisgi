@@ -49,14 +49,19 @@ public class UserService {
 
     }
 
-    public UserResponseDTO convertUserResponseDTO(User user){
+    public UserResponseDTO convertUserResponseDTO(User user) {
         UserResponseDTO userResponse = new UserResponseDTO();
         userResponse.setId(user.getId());
         userResponse.setEmail(user.getEmail());
         userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
-        Set<String> roles = user.getRoles().stream().map(role -> role.getRoleName()).collect(Collectors.toSet());
-        userResponse.setRoles(roles);
+
+        if (user.getRoles() != null) {
+            Set<String> roles = user.getRoles().stream().map(role -> role.getRoleName()).collect(Collectors.toSet());
+            userResponse.setRoles(roles);
+
+        }
+
         return userResponse;
     }
 

@@ -30,6 +30,7 @@ public class AuthController {
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
 
         try {
+
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             String email = authentication.getName();
             User user = new User();
@@ -42,6 +43,7 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um erro durante a autenticação");
         }
     }

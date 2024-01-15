@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-
+@CrossOrigin
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
-    private UserRepository userRepository;
     private UserService userService;
 
     @Autowired
@@ -29,7 +28,7 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers() {
 
-        return userRepository.findAll();
+        return userService.getAll();
     }
 
     @PostMapping
@@ -40,9 +39,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
-        return user;
+    public UserResponseDTO getUser(@PathVariable Long id) {
+        return userService.findById(id);
+
     }
 
 }

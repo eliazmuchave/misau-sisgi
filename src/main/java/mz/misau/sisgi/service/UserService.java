@@ -9,6 +9,8 @@ import mz.misau.sisgi.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,15 @@ public class UserService {
         User savedUser = userRepository.save(user);
         return savedUser;
 
+    }
+
+    public List<User> getAll(){
+        return userRepository.findAll();
+    }
+
+    public UserResponseDTO findById(Long id){
+        User user = userRepository.findById(id).orElse(new User());
+       return convertUserResponseDTO(user);
     }
 
     public UserResponseDTO addNewUser(UserDTO userDTO) {

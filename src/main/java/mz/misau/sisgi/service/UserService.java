@@ -35,6 +35,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<UserResponseDTO> getAllUsers(){
+
+        List<User> users = getAll();
+        List<UserResponseDTO> usersResponseDTO = users.stream().map(user -> convertUserResponseDTO(user)).collect(Collectors.toList());
+        return usersResponseDTO;
+
+    }
+
     public UserResponseDTO findById(Long id){
         User user = userRepository.findById(id).orElse(new User());
        return convertUserResponseDTO(user);

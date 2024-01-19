@@ -28,3 +28,12 @@ export async function usersLoader({request}) {
 
     return response;
 }
+
+export async function userLoader({params}){
+    const id = params.id;
+    const response = await fetch("http://localhost:8080/api/users/"+id);
+    if(!response.ok){
+        throw json({message: "Utilizador Não Encontrado"}, {status: 500});
+    }
+    return response;
+}

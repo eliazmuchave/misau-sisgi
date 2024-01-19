@@ -5,7 +5,8 @@ import LoginPage, {loginAction} from "./pages/LoginPage";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import UserList from "./components/UserList";
-import {usersLoader} from "./pages/UserPage";
+import {userLoader, usersLoader} from "./pages/UserPage";
+import UserDetails from "./components/UserDetails";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,8 +26,16 @@ function App() {
         },
         {
           path: "users",
-          element: <UserList></UserList>,
-          loader: usersLoader
+          loader: usersLoader,
+          children: [
+            {index: true, element: <UserList></UserList>},
+            {
+              path: ":id",
+              element: <UserDetails></UserDetails>,
+              loader: userLoader
+            }
+
+          ]
         }
       ]
     }

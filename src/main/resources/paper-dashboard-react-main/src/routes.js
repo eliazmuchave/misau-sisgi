@@ -42,7 +42,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/user-page",
+    path: "/users",
     name: "Utilizadores",
     icon: "nc-icon nc-single-02",
     component: <UserPage />,

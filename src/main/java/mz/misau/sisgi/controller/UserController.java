@@ -29,6 +29,7 @@ public class UserController {
     public List<UserResponseDTO> getAllUsers() {
 
         return userService.getAllUsers();
+
     }
 
     @PostMapping
@@ -42,6 +43,11 @@ public class UserController {
     public UserResponseDTO getUser(@PathVariable Long id) {
         return userService.findById(id);
 
+    }
+    @PatchMapping("/{id}")
+    public UserResponseDTO updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
+
+       return userService.updateUser(userDTO, id);
     }
 
 }

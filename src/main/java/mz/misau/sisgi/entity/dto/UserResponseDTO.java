@@ -17,6 +17,6 @@ public class UserResponseDTO {
     @NotNull
     private String lastName;
 
-    private Set<String> roles;
+    private Set<RoleResponseDTO> roles;
 
 }

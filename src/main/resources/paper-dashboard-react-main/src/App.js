@@ -12,16 +12,19 @@ import Icons from "views/Icons.js";
 import Typography from "views/Typography.js";
 import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
-import UserPage from "views/User.js";
+import UserPage, {addUserAction, userLoader} from "views/User.js";
 import Admin from "layouts/Admin";
 import Login from "layouts/Login";
+import {loginAction} from "./layouts/Login";
+import UsersList, {usersLoader} from "./views/UsersList";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
     children: [
-      { index: true, element: <Login></Login> },
-      { path: "/login", element: <Login></Login> },
+      { index: true, element: <Login></Login>, action: loginAction},
+      { path: "/login", element: <Login></Login>, action: loginAction },
     ],
   },
   {
@@ -33,7 +36,11 @@ const router = createBrowserRouter([
       { path: "user-page", element: <UserPage></UserPage> },
       { path: "notifications", element: <Notifications></Notifications> },
       { path: "tables", element: <TableList></TableList> },
-      { path: "user-page", element: <UserPage></UserPage> },
+      { path: "users", children: [
+          {index:true, element: <UsersList></UsersList>, loader: usersLoader},
+          {path: "new", element: <UserPage></UserPage>, action: addUserAction},
+          {path: ":id/edit", element: <UserPage></UserPage>, action: addUserAction, loader: userLoader}
+        ]},
       { path: "typography", element: <Typography></Typography> },
     ],
   },

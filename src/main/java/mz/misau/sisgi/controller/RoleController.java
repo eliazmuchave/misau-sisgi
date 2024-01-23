@@ -6,14 +6,13 @@ import mz.misau.sisgi.entity.dto.RoleResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
 import mz.misau.sisgi.service.RoleService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/roles")
 public class RoleController {
@@ -30,6 +29,11 @@ public class RoleController {
          return ResponseEntity.created(new URI("/roles" + responseDTO.getId())).body(responseDTO);
 
 
+     }
+
+     @GetMapping
+    public List<Role> getAllRoles(){
+         return roleService.getAll();
      }
 
 }

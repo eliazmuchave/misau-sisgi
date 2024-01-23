@@ -6,12 +6,18 @@ import mz.misau.sisgi.entity.dto.RoleResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoleService {
     private final RoleRepository roleRepository;
 
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+    }
+
+    public List<Role> getAll(){
+        return roleRepository.findAll();
     }
 
     public RoleResponseDTO addNewRole(RoleDTO roleDTO) {

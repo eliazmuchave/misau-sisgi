@@ -15,6 +15,6 @@ public class UserDTO {
     private String firstName;
     @NotNull
     private String lastName;
-    private Collection<String> roles;
+    private Collection<Long> roles;
 
 }

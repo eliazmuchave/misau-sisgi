@@ -32,8 +32,8 @@ public class RoleController {
      }
 
      @GetMapping
-    public List<Role> getAllRoles(){
-         return roleService.getAll();
+    public List<RoleResponseDTO> getAllRoles(){
+         return roleService. getAllRolesDTO();
      }
 
 }

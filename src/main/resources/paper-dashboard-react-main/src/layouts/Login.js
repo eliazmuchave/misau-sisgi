@@ -1,5 +1,6 @@
-import {Form, json, redirect} from "react-router-dom";
+import {Form, json, redirect, useActionData} from "react-router-dom";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -14,6 +15,12 @@ import classes from "./Login.module.css";
 import "assets/scss/paper-dashboard/cards/_card-login.scss";
 import {getAuthorizationToken, setAuthorizationToken} from "../util/AccessTokenUtil";
 export default function Login() {
+  let actionData = useActionData();
+
+  if(!actionData){
+    actionData = {email: false, password: false};
+  }
+
   return (
     <div className={classes.container}>
       <Col md="4">
@@ -25,16 +32,29 @@ export default function Login() {
           </CardHeader>
           <CardBody>
             <Form method="post">
-              <FormGroup>
+              {actionData.authenticationFailed && <Alert color="danger">
+                <span><strong>Credenciais Inválidas</strong> - Por favor, verifique seu nome de usuário e senha e tente novamente</span>
+              </Alert>}
+
+              {!actionData.authenticationFailed && <Alert color="info">
+                <span><strong>Credenciais Inválidas</strong> - Por favor, autentique-se usando E-mail e Password </span>
+              </Alert>}
+              <FormGroup >
                 <label htmlFor="email" className="control-label">
-                  Email
+                  E-mail
                 </label>
-                <Input type="text" name="email" id="email" />
+                <Input type="text" name="email" id="email" invalid={actionData.email} />
+                <FormFeedback >
+                  <span><strong>O endereço de e-mail fornecido é inválido</strong> - Por favor, verifique e tente novamente</span>
+                </FormFeedback>
 
               </FormGroup>
               <FormGroup>
                 <label>Password</label>
-                <Input type="password" name="password" id="password" />
+                <Input type="password" name="password" id="password" invalid={actionData.password} />
+                <FormFeedback>
+                  <span><strong>A password fornecida é inválida</strong> - Por favor, verifique e tente novamente</span>
+                </FormFeedback>
 
               </FormGroup>
 
@@ -56,22 +76,44 @@ export default function Login() {
 }
 
 export async function loginAction({params, request}) {
+
+
   const data = await request.formData();
+  const errors = {authenticationFailed: false};
   const dataEntries = Object.fromEntries(data);
-  console.log(dataEntries);
   const response = await fetch("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(dataEntries),
     headers: {"Content-Type": "application/json"}
   });
 
+  let email = dataEntries.email;
+  let password = dataEntries.password;
+  if (typeof email !== "string" || !email.includes("@")) {
+    errors.email =
+        true;
+  }
+
+  if (typeof password !== "string" || password.length < 6) {
+    errors.password = true;
+  }
+  if(response.status == 400){
+    errors.authenticationFailed = true;
+  }
+  if (Object.keys(errors).length > 1) {
+    console.log(Object.keys(errors).length )
+    console.log("Erros de autenticacao")
+
+    return errors;
+  }
+
   if (!response.ok) {
-    throw json({message: "Could not send the request"}, {status: 500});
+
+   return redirect("/login");
   }
   const responseData = await response.json();
 
   setAuthorizationToken(responseData.token);
-  console.log(getAuthorizationToken());
 
   return redirect("/admin");
 

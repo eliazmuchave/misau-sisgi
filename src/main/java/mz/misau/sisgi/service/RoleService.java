@@ -4,9 +4,11 @@ import mz.misau.sisgi.entity.Role;
 import mz.misau.sisgi.entity.dto.RoleDTO;
 import mz.misau.sisgi.entity.dto.RoleResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleService {
@@ -17,7 +19,18 @@ public class RoleService {
     }
 
     public List<Role> getAll(){
-        return roleRepository.findAll();
+        List<Role>  roles = roleRepository.findAll();
+        return roles;
+    }
+
+    public List<RoleResponseDTO> getAllRolesDTO(){
+        List<Role> roles = getAll();
+        List<RoleResponseDTO> responses = roles.stream().map(role -> {
+            RoleResponseDTO response = new RoleResponseDTO();
+            BeanUtils.copyProperties(role, response, "users");
+            return  response;
+        }).collect(Collectors.toList());
+        return responses;
     }
 
     public RoleResponseDTO addNewRole(RoleDTO roleDTO) {

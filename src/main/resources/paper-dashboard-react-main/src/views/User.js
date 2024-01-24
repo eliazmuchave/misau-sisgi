@@ -1,4 +1,3 @@
-
 import React from "react";
 
 // reactstrap components
@@ -18,14 +17,16 @@ import {json, redirect, Form, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken, setAuthorizationToken} from "../util/AccessTokenUtil";
 
 export default function User() {
+    console.log("loading user component")
     const responses = useLoaderData();
+    console.log(responses)
 
     let data = {};
     let roles = [];
-   if (responses){
+    if (responses) {
         data = responses[0];
-       roles = responses[1];
-   }
+        roles = responses[1];
+    }
     return (
         <>
             <div className="content">
@@ -94,17 +95,17 @@ export default function User() {
                                             </FormFeedback>
                                         </Col>
                                         <Col className="pl-1" md="6">
-                                            <FormGroup >
+                                            <FormGroup>
                                                 <Label for="checkbox2" sm={2}>
                                                     Roles
                                                 </Label>
-                                                <Col  >
+                                                <Col>
 
-                                                        {roles.map(role => (<FormGroup row key={role.id} row><Label check>
-                                                            <input type="checkbox" name="roles" value={role.id} ></input>
-                                                            {role.roleName}
+                                                    {roles.map(role => (<FormGroup row key={role.id} row><Label check>
+                                                        <input type="checkbox" name="roles" value={role.id}></input>
+                                                        {role.roleName}
 
-                                                        </Label></FormGroup>))}
+                                                    </Label></FormGroup>))}
 
 
                                                 </Col>
@@ -173,8 +174,9 @@ export async function addUserAction({request, params}) {
 export async function userLoader({params}) {
     const id = params.id;
 
+
     const token = getAuthorizationToken();
-   const response = Promise.all([
+    const response = Promise.all([
         fetch("/api/users/" + id, {
             headers: {"Authorization": `Bearer ${token}`}
         }).then(resp => resp.json()),
@@ -184,8 +186,5 @@ export async function userLoader({params}) {
 
     ]);
 
-
-
-
-    return response ;
+    return response;
 }

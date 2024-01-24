@@ -1,4 +1,4 @@
-import {Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import {json, Link, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
 
@@ -13,13 +13,19 @@ export default function UsersList() {
                 <Col md="12">
                     <Card>
                         <CardHeader>
-                            <CardTitle tag="h4">Utilizadores</CardTitle>
+                            <Row>
+                                <Col md="10"><CardTitle tag="h4">Utilizadores</CardTitle></Col>
+                                <Col md="2" className="mr-auto ml-auto">
+                                    <Button><Link to="new">Adiconar Utilizador</Link></Button>
+
+                                </Col>
+                            </Row>
+
+
                         </CardHeader>
                         <CardBody>
                             <Row>
-                                <nav>
-                                    <Link to="new">Adicionar Nove Utilizador</Link>
-                                </nav>
+
                             </Row>
                             <Table responsive>
                                 <thead className="text-primary">
@@ -36,7 +42,8 @@ export default function UsersList() {
                                     <td>{user.email}</td>
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
-                                    <td >{user.roles.map(role => (<span key={role.id}>{`${role.roleName}| `} </span>))}</td>
+                                    <td>{user.roles.map(role => (
+                                        <span key={role.id}>{`${role.roleName}| `} </span>))}</td>
                                     <td><Link to={`${user.id}/edit`}>Editar</Link></td>
                                 </tr>))}
 

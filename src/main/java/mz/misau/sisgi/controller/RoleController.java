@@ -1,9 +1,7 @@
 package mz.misau.sisgi.controller;
 
-import mz.misau.sisgi.entity.Role;
-import mz.misau.sisgi.entity.dto.RoleDTO;
-import mz.misau.sisgi.entity.dto.RoleResponseDTO;
-import mz.misau.sisgi.repository.RoleRepository;
+import mz.misau.sisgi.dto.RoleDTO;
+import mz.misau.sisgi.dto.RoleResponseDTO;
 import mz.misau.sisgi.service.RoleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

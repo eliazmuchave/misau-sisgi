@@ -2,8 +2,8 @@ package mz.misau.sisgi.controller;
 
 import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.entity.User;
-import mz.misau.sisgi.entity.dto.LoginRequest;
-import mz.misau.sisgi.entity.dto.LoginResponse;
+import mz.misau.sisgi.dto.LoginRequest;
+import mz.misau.sisgi.dto.LoginResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,4 +1,4 @@
-package mz.misau.sisgi.entity.dto;
+package mz.misau.sisgi.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

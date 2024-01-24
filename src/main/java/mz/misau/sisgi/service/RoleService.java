@@ -1,8 +1,8 @@
 package mz.misau.sisgi.service;
 
 import mz.misau.sisgi.entity.Role;
-import mz.misau.sisgi.entity.dto.RoleDTO;
-import mz.misau.sisgi.entity.dto.RoleResponseDTO;
+import mz.misau.sisgi.dto.RoleDTO;
+import mz.misau.sisgi.dto.RoleResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

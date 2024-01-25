@@ -2,7 +2,9 @@ package mz.misau.sisgi.service.workflow;
 
 import mz.misau.sisgi.dto.workflow.WorkflowTaskRequest;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
+import mz.misau.sisgi.entity.workflow.PredictedStatusFlow;
 import mz.misau.sisgi.entity.workflow.WorkflowTask;
+import mz.misau.sisgi.repository.workflow.PredictedStatusFlowRepository;
 import mz.misau.sisgi.repository.workflow.WorkflowTaskRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,11 @@ import java.util.stream.Collectors;
 public class WorkflowTaskService {
 
     private final WorkflowTaskRepository workflowTaskRepository;
+    private final PredictedStatusFlowRepository predictedStatusFlowRepository;
 
-    public WorkflowTaskService(WorkflowTaskRepository workflowTaskRepository) {
+    public WorkflowTaskService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository) {
         this.workflowTaskRepository = workflowTaskRepository;
+        this.predictedStatusFlowRepository = predictedStatusFlowRepository;
     }
     public List<WorkflowTask> getAll(){
         return workflowTaskRepository.findAll();

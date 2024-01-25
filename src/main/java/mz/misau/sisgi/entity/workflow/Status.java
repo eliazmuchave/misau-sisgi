@@ -9,7 +9,7 @@ import mz.misau.sisgi.entity.BaseEntity;
 @Data
 public class Status extends BaseEntity {
 
-    private String nameState;
+    private String nameStatus;
 
 
 }

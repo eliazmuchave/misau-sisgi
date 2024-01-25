@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class StatusReqest {
-    private String nameState;
+    private Long id;
+    private String nameStatus;
 }

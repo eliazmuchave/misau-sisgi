@@ -45,6 +45,7 @@ public class AuthController {
         } catch (BadCredentialsException | UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um erro durante a autenticação");
         }
     }

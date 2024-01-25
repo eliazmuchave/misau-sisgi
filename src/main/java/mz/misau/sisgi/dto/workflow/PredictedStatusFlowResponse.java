@@ -13,4 +13,5 @@ public class PredictedStatusFlowResponse {
     private List<Long> statuses;
     private Date created;
     private Date updated;
+
 }

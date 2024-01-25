@@ -39,6 +39,11 @@ public class StatusService {
         return response;
     }
 
+    public List<Status> getAllById(List<Long> ids){
+        List<Status> statues = statusRepository.findAllById(ids);
+        return statues;
+    }
+
     public Status convertToStatus(StatusReqest statusReqest){
         Status status = new Status();
         BeanUtils.copyProperties(statusReqest, status);

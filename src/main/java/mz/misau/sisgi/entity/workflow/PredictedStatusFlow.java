@@ -16,7 +16,8 @@ public class PredictedStatusFlow extends BaseEntity {
 
     @OneToMany
     private List<WorkflowTask> workflowTasks;
-    @OneToMany
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name = "status_workflow_join", joinColumns = {@JoinColumn(name = "predicted_state_flow_id")}, inverseJoinColumns = {@JoinColumn(name = "status_id")})
     private List<Status> statuses;
 
 

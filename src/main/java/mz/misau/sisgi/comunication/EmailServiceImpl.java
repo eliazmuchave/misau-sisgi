@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService {
     private final NotificationRepository notificationRepository;
 
     private final JavaMailSender javaMailSender;
@@ -18,22 +18,24 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public void sendMessage(Notification notification) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("eliazardo.muchave.ac@gmail.com");
-            message.setTo(notification.getDestination());
-            message.setSubject(notification.getSubject());
-            message.setText(notification.getText());
-            javaMailSender.send(message);
-            notification.setSent(true);
-            notification.setSentSuccessfully(true);
-            notificationRepository.save(notification);
-        }catch (Exception e){
-            notification.setSentSuccessfully(false);
-            notification.setSent(true);
-            notificationRepository.save(notification);
-        }
+        if (notification != null) {
+            try {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("eliazardo.muchave.ac@gmail.com");
+                message.setTo(notification.getDestination());
+                message.setSubject(notification.getSubject());
+                message.setText(notification.getText());
+                javaMailSender.send(message);
+                notification.setSent(true);
+                notification.setSentSuccessfully(true);
+                notificationRepository.save(notification);
 
+            } catch (Exception e) {
+                notification.setSentSuccessfully(false);
+                notification.setSent(true);
+                notificationRepository.save(notification);
+            }
+        }
     }
 
 }

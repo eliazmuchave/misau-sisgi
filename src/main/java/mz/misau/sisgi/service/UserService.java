@@ -1,5 +1,7 @@
 package mz.misau.sisgi.service;
 
+import mz.misau.sisgi.comunication.Notification;
+import mz.misau.sisgi.comunication.NotificationRepository;
 import mz.misau.sisgi.entity.Role;
 import mz.misau.sisgi.entity.User;
 import mz.misau.sisgi.dto.RoleResponseDTO;
@@ -7,6 +9,7 @@ import mz.misau.sisgi.dto.UserDTO;
 import mz.misau.sisgi.dto.UserResponseDTO;
 import mz.misau.sisgi.repository.RoleRepository;
 import mz.misau.sisgi.repository.UserRepository;
+import mz.misau.sisgi.util.PasswordGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +21,34 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
+    private final NotificationRepository notificationRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, NotificationRepository notificationRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     public User addNewUser(User user) {
         User savedUser = userRepository.save(user);
+        String password = PasswordGenerator.create(8);
+        user.setPassword(password);
+        notifyCredentials(user,password);
         return savedUser;
 
+    }
+    private void notifyCredentials(User user, String password){
+        Notification notification = new Notification();
+        notification.setDestination(user.getEmail());
+        notification.setSubject("Dados de Acesso à Sua Conta");
+        String text = """
+                Seus dados de acesso ao Sistema de Gestão de Actividades do MISAU foram criados com sucesso!
+                Nome do Utilizador: %s
+                Password: %s
+                Endereço: http://localhost:8080
+                """.formatted(user.getEmail(), password);
+        notification.setText(text);
+        notificationRepository.save(notification);
     }
 
     public List<User> getAll() {

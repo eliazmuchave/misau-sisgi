@@ -1,5 +1,6 @@
 package mz.misau.sisgi.controller.workflow;
 
+import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskRequest;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
 import mz.misau.sisgi.entity.workflow.WorkflowTask;
@@ -14,13 +15,15 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/workflowTask")
+@RequestMapping("/api/tasks")
 public class WorkflowTaskController {
 
     private final WorkflowTaskService workflowTaskService;
+    private final EmailService emailService;
 
-    public WorkflowTaskController(WorkflowTaskService workflowTaskService) {
+    public WorkflowTaskController(WorkflowTaskService workflowTaskService, EmailService emailService) {
         this.workflowTaskService = workflowTaskService;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -29,6 +32,7 @@ public class WorkflowTaskController {
             List<WorkflowTaskResponse> responses = workflowTaskService.getAllResponses();
             return ResponseEntity.status(HttpStatus.OK).body(responses);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
@@ -38,5 +42,10 @@ public class WorkflowTaskController {
         WorkflowTaskResponse response = workflowTaskService.add(workflowTaskRequest);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<WorkflowTaskResponse> getById(@PathVariable Long id){
+        WorkflowTaskResponse taskResponse = workflowTaskService.getById(id);
+      return  ResponseEntity.status(HttpStatus.OK).body(taskResponse);
     }
 }

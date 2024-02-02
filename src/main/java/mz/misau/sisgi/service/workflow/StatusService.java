@@ -56,4 +56,17 @@ public class StatusService {
         return  convertToResponse(status);
 
     }
+
+    public StatusResponse updateStatus(StatusReqest statusReqest, Long id) {
+        Status status = statusRepository.findById(id).orElseThrow();
+        BeanUtils.copyProperties(statusReqest, status,"id");
+        statusRepository.save(status);
+        return convertToResponse(status);
+
+    }
+
+    public StatusResponse getById(Long id) {
+        Status status = statusRepository.findById(id).orElseThrow();
+        return convertToResponse(status);
+    }
 }

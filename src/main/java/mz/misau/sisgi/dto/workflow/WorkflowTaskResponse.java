@@ -12,4 +12,5 @@ public class WorkflowTaskResponse {
     private Date expectedEndDate;
     private Date created;
     private Date updated;
+    private PredictedStatusFlowResponse workflow;
 }

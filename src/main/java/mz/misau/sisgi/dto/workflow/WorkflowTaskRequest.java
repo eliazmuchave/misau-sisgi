@@ -10,4 +10,5 @@ public class WorkflowTaskRequest {
     private String taskName;
     private Date startDate;
     private Date expectedEndDate;
+    private Long statusFlow;
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class StatusResponse {
     private Long id;
-    private String nameState;
+    private String nameStatus;
     private Date created;
     private Date updated;
 }

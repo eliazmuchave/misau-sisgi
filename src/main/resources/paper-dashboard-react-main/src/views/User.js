@@ -17,9 +17,7 @@ import {json, redirect, Form, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken, setAuthorizationToken} from "../util/AccessTokenUtil";
 
 export default function User() {
-    console.log("loading user component")
     const responses = useLoaderData();
-    console.log(responses)
 
     let data = {};
     let roles = [];

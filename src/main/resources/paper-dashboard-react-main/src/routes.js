@@ -35,8 +35,8 @@ var routes = [
   },
 
   {
-    path: "/notifications",
-    name: "Notificações",
+    path: "/tasks",
+    name: "Tarefas",
     icon: "nc-icon nc-bell-55",
     component: <Notifications />,
     layout: "/admin",
@@ -49,8 +49,8 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/tables",
-    name: "Actividades",
+    path: "/status",
+    name: "Estados de Actividade",
     icon: "nc-icon nc-tile-56",
     component: <TableList />,
     layout: "/admin",

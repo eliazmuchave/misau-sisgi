@@ -21,6 +21,9 @@ import StatusList, {statusesLoader} from "./views/StatusList";
 import Status, {addStatusAction, statusLoader} from "./views/Status";
 import Task, {taskAction, taskLoader} from "./views/Task";
 import TaskList, {tasksLoader} from "./views/TaskList";
+import StatusFlow, {statusFlowAction} from "./views/StatusFlow";
+import StatusFlowList, {statusFlowLoader} from "./views/StatusFlowList";
+import ErrorPage from "./views/ErrorPage";
 
 
 const router = createBrowserRouter([
@@ -34,7 +37,9 @@ const router = createBrowserRouter([
     {
         path: "/admin",
         element: <Admin></Admin>,
+        errorElement:<ErrorPage></ErrorPage>,
         children: [
+
             {path: "dashboard", element: <Dashboard></Dashboard>},
             {path: "icons", element: <Icons></Icons>},
             {path: "user-page", element: <UserPage></UserPage>},
@@ -53,13 +58,19 @@ const router = createBrowserRouter([
                 ]
             },
             {
+                path: "statusflow", children: [
+                    {index: true,element: <StatusFlowList></StatusFlowList>, loader: statusFlowLoader },
+                    {path: "new", element: <StatusFlow></StatusFlow>, action: statusFlowAction},
+                    {path: ":id/edit", element: <Status></Status>, action: addStatusAction, loader: statusLoader}
+                ]
+            },
+            {
                 path: "users", children: [
                     {index: true, element: <UsersList></UsersList>, loader: usersLoader},
                     {path: "new", element: <UserPage></UserPage>, action: addUserAction},
                     {path: ":id/edit", element: <UserPage></UserPage>, action: addUserAction, loader: userLoader}
                 ]
-            },
-            {path: "typography", element: <Typography></Typography>},
+            }
         ],
     },
 ]);

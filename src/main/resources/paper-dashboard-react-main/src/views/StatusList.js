@@ -12,9 +12,11 @@ export default function StatusList (){
                     <Card>
                         <CardHeader>
                             <Row>
-                                <Col md="10"><CardTitle tag="h4">Estados de Actividades</CardTitle></Col>
-                                <Col md="2" className="mr-auto ml-auto">
+                                <Col md="6"><CardTitle tag="h4">Estados de Actividades</CardTitle></Col>
+                                <Col md="6" className="mr-auto">
                                     <Button><Link to="new">Adiconar Estado</Link></Button>
+                                    <Button><Link to="/admin/statusFlow">Fluxo de Estados</Link></Button>
+                                    <Button><Link to="/admin/statusFlow/new">Adicionar Fluxo</Link></Button>
 
                                 </Col>
                             </Row>

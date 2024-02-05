@@ -1,20 +1,31 @@
 package mz.misau.sisgi.service.workflow;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.comunication.Notification;
+import mz.misau.sisgi.comunication.NotificationRepository;
 import mz.misau.sisgi.dto.workflow.PredictedStatusFlowResponse;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskRequest;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
+import mz.misau.sisgi.entity.workflow.Notifiable;
 import mz.misau.sisgi.entity.workflow.PredictedStatusFlow;
+import mz.misau.sisgi.entity.workflow.Status;
 import mz.misau.sisgi.entity.workflow.WorkflowTask;
+import mz.misau.sisgi.repository.workflow.NotifiableRepository;
 import mz.misau.sisgi.repository.workflow.PredictedStatusFlowRepository;
 import mz.misau.sisgi.repository.workflow.WorkflowTaskRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.LongSummaryStatistics;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,11 +34,17 @@ public class WorkflowTaskService {
     private final WorkflowTaskRepository workflowTaskRepository;
     private final PredictedStatusFlowRepository predictedStatusFlowRepository;
     private final EmailService emailService;
+    private final NotificationRepository notificationRepository;
+    private final NotifiableRepository notifiableRepository;
+    private final JwtUtil jwtUtil;
 
-    public WorkflowTaskService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService) {
+    public WorkflowTaskService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository, JwtUtil jwtUtil) {
         this.workflowTaskRepository = workflowTaskRepository;
         this.predictedStatusFlowRepository = predictedStatusFlowRepository;
         this.emailService = emailService;
+        this.notificationRepository = notificationRepository;
+        this.notifiableRepository = notifiableRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     public List<WorkflowTask> getAll() {
@@ -52,14 +69,38 @@ public class WorkflowTaskService {
         PredictedStatusFlowResponse predictedStatusFlowResponse = new PredictedStatusFlowResponse();
         BeanUtils.copyProperties(workflowTask, response);
 
+        String currentStatus = getCurrentStatusName(workflowTask);
+        response.setCurrentStatus(currentStatus);
+
         PredictedStatusFlow predictedStatusFlow = workflowTask.getPredictedStatusFlow();
-       if (predictedStatusFlow != null){
-           BeanUtils.copyProperties(predictedStatusFlow, predictedStatusFlowResponse);
-           response.setWorkflow(predictedStatusFlowResponse);
-       }
+        if (predictedStatusFlow != null) {
+            BeanUtils.copyProperties(predictedStatusFlow, predictedStatusFlowResponse);
+            response.setWorkflow(predictedStatusFlowResponse);
+        }
 
 
         return response;
+    }
+
+    private String getCurrentStatusName(WorkflowTask workflowTask) {
+        int currentStatus = workflowTask.getCurrentStatus();
+        PredictedStatusFlow predictedStatusFlow = workflowTask.getPredictedStatusFlow();
+        if (predictedStatusFlow != null) {
+            List<Status> statuses = predictedStatusFlow.getStatuses();
+            try {
+                if (statuses != null && !statuses.isEmpty()) {
+                    int length = statuses.size() - 1;
+                    if (length >= currentStatus) {
+                        return statuses.get(currentStatus).getNameStatus();
+                    }
+                    return statuses.get(length).getNameStatus();
+                }
+
+            } catch (IndexOutOfBoundsException e) {
+            }
+
+        }
+        return "Não Iniciado";
     }
 
     public WorkflowTask convertToEntity(WorkflowTaskRequest workflowTaskRequest) {
@@ -78,5 +119,59 @@ public class WorkflowTaskService {
     public WorkflowTaskResponse getById(Long id) {
         WorkflowTask task = workflowTaskRepository.findById(id).orElse(new WorkflowTask());
         return convertFromEntity(task);
+    }
+
+    public WorkflowTaskResponse forwardStatus(Long id) {
+        WorkflowTask task = workflowTaskRepository.findById(id).orElseThrow();
+        task.forwardStatus();
+        save(task);
+        notifyStatusChange(task);
+        return convertFromEntity(task);
+
+
+    }
+
+    private void notifyStatusChange(WorkflowTask workflowTask) {
+        if (workflowTask != null) {
+            if (workflowTask.getNotifiables() != null) {
+                List<Notification> notifications = new ArrayList<>();
+                workflowTask.getNotifiables().forEach(notifiable -> {
+
+                    LocalDate date = LocalDate.now();
+                    String dateNow = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                    LocalTime time = LocalTime.now();
+                    String timeNow = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                    Notification notification = new Notification();
+                    String text = """
+                            O processo %s foi actualizado  para o estado: %s no dia %s às  %s
+                            """.formatted(workflowTask.getTaskName(), getCurrentStatusName(workflowTask), dateNow, timeNow);
+                    notification.setSubject("Actualização do Estado do Processo - " + workflowTask.getTaskName());
+                    notification.setText(text);
+                    notification.setDestination(notifiable.getEmail());
+                    notifications.add(notification);
+
+                });
+
+                notificationRepository.saveAll(notifications);
+
+            }
+        }
+    }
+
+    public void notifyMe(@NotNull WorkflowTask workflowTask, @Email String userEmail) {
+
+        Notifiable notifiable = new Notifiable();
+        notifiable.setWorkflowTask(workflowTask);
+        notifiable.setEmail(userEmail);
+        notifiableRepository.save(notifiable);
+
+    }
+
+    public void notifyStatusChange(Long workflowId, String authorization) {
+        WorkflowTask workflowTask = workflowTaskRepository.findById(workflowId).orElseThrow();
+        String email = jwtUtil.getEmailFromToken(authorization);
+        notifyMe(workflowTask, email);
     }
 }

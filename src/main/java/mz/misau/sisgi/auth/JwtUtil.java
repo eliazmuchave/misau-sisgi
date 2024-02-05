@@ -80,6 +80,13 @@ public class JwtUtil {
         return claims.getSubject();
     }
 
+    public String getEmailFromToken(String authorization){
+        String token = authorization.substring(authorization.indexOf(" "));
+        System.out.println(token);
+        Claims claims = parseJwtClaims(token);
+       return getEmail(claims);
+    }
+
     private List<String> getRoles(Claims claims) {
         return (List<String>) claims.get("roles");
     }

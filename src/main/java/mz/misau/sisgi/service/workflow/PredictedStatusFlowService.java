@@ -34,11 +34,12 @@ public class PredictedStatusFlowService {
 
     public PredictedStatusFlowResponse convertToResponse(PredictedStatusFlow predictedStatusFlow){
         PredictedStatusFlowResponse predictedStatusFlowResponse = new PredictedStatusFlowResponse();
+        predictedStatusFlowResponse.setStatuses(new ArrayList<>());
         BeanUtils.copyProperties(predictedStatusFlow, predictedStatusFlowResponse);
         if (predictedStatusFlow.getStatuses() != null){
             predictedStatusFlow.getStatuses().stream().forEach(status -> {
-                predictedStatusFlowResponse.setStatuses(new ArrayList<>());
-                predictedStatusFlowResponse.getStatuses().add(status.getId());});
+
+                predictedStatusFlowResponse.getStatuses().add(statusService.convertToResponse(status));});
         }
         return predictedStatusFlowResponse;
     }
@@ -51,6 +52,10 @@ public class PredictedStatusFlowService {
 
     public PredictedStatusFlowResponse add(PredictedStatusFlowRequest predictedStatusFlowRequest) {
         PredictedStatusFlow predictedStatusFlow = convertFromRequest(predictedStatusFlowRequest);
+       List<Status> statuses = statusService.getAllById(predictedStatusFlowRequest.getStatuses());
+        System.out.println(statuses);
+       predictedStatusFlow.setStatuses(statuses);
+
         return convertToResponse(predictedStatusFlowRepository.save(predictedStatusFlow));
     }
 

@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import {Form, json, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
-import StatusFlow from "./StatusFlow";
+import StatusFlowSelect from "./StatusFlowSelect";
 import {format} from "date-fns";
 
 export default function Task() {
@@ -31,13 +31,13 @@ export default function Task() {
                             <CardTitle tag="h5">Registo de Tarefas</CardTitle>
                         </CardHeader>
                         <CardBody>
-                            <Form method={data && data.id ? "PATCH" : "POST"}>
+                            <Form method={data && data?.id ? "PATCH" : "POST"}>
                                 <Row>
                                     <Col className="pr-1" md="6">
                                         <FormGroup>
                                             <label>Designação</label>
                                             <Input name="taskName" id="nameTask" invalid={errors?.taskName}
-                                                   defaultValue={data ? data.taskName : ""}
+                                                   defaultValue={data ? data?.taskName : ""}
                                                    type="text"
                                             />
                                             <FormFeedback>
@@ -48,7 +48,7 @@ export default function Task() {
                                         <FormGroup>
                                             <label>Data Início</label>
                                             <Input name="startDate" id="startDate" invalid={errors?.startDate}
-                                                   defaultValue={data ? format(data.startDate,"yyyy-MM-dd") : ""}
+                                                   defaultValue={data ? format(data?.startDate,"yyyy-MM-dd") : ""}
                                                    type="date"
                                                    data-date-format="dd MM yyyy"
                                             />
@@ -59,7 +59,7 @@ export default function Task() {
 
                                         <FormGroup>
                                             <Label>Fluxo da Tarefa</Label>
-                                        <StatusFlow select={data.workflow} name="statusFlow" id = "statusFlow" ></StatusFlow>
+                                        <StatusFlowSelect select={data?.workflow} name="statusFlow" id = "statusFlow" ></StatusFlowSelect>
 
                                         </FormGroup>
 
@@ -78,7 +78,7 @@ export default function Task() {
                                                 color="primary"
                                                 type="submit"
                                             >
-                                                {data && data.id ? "Actualizar" : "Resgistar"}
+                                                {data && data?.id ? "Actualizar" : "Resgistar"}
                                             </Button>
 
                                         </div>
@@ -126,7 +126,6 @@ export async function taskAction({request}) {
 export async function taskLoader({params, request}){
 
     const id = params.id;
-    console.log(id);
     const token = getAuthorizationToken();
     const response = await fetch(`/api/tasks/${id}`, {
         headers: {

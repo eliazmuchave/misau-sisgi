@@ -1,12 +1,11 @@
 package mz.misau.sisgi.controller.workflow;
 
+import jakarta.servlet.http.HttpServletRequest;
 import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskRequest;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
-import mz.misau.sisgi.entity.workflow.WorkflowTask;
 import mz.misau.sisgi.service.workflow.WorkflowTaskService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +31,7 @@ public class WorkflowTaskController {
             List<WorkflowTaskResponse> responses = workflowTaskService.getAllResponses();
             return ResponseEntity.status(HttpStatus.OK).body(responses);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
@@ -47,5 +46,23 @@ public class WorkflowTaskController {
     public ResponseEntity<WorkflowTaskResponse> getById(@PathVariable Long id){
         WorkflowTaskResponse taskResponse = workflowTaskService.getById(id);
       return  ResponseEntity.status(HttpStatus.OK).body(taskResponse);
+    }
+
+    @PatchMapping("/{id}/forwardStatus")
+    public ResponseEntity<WorkflowTaskResponse> forwardStatus(@PathVariable Long id){
+        WorkflowTaskResponse taskResponse = workflowTaskService.forwardStatus(id);
+        return  ResponseEntity.status(HttpStatus.OK).body(taskResponse);
+
+
+    }
+
+    @PatchMapping("/{id}/notify")
+    public ResponseEntity notifyMeStatusChange(@PathVariable Long id, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        System.out.println(token);
+         workflowTaskService.notifyStatusChange(id,token);
+        return  ResponseEntity.status(HttpStatus.OK).build();
+
+
     }
 }

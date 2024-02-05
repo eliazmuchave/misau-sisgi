@@ -51,17 +51,7 @@ export default function User() {
 
                                         </Col>
 
-                                        <Col className="pl-1" md="6">
-                                            <FormGroup>
-                                                <label htmlFor="password">
-                                                    Password
-                                                </label>
-                                                <Input type="password" id="password" name="password"/>
-                                            </FormGroup>
-                                            <FormFeedback>
-                                                Password Inválida
-                                            </FormFeedback>
-                                        </Col>
+
                                     </Row>
                                     <Row>
                                         <Col className="pr-1" md="3">
@@ -149,7 +139,6 @@ export async function addUserAction({request, params}) {
 
     const dataEntries = Object.fromEntries(data);
     dataEntries.roles = data.getAll("roles");
-    console.log(dataEntries);
     const token = getAuthorizationToken();
 
     const response = await fetch(url, {

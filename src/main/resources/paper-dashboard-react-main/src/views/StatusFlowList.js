@@ -1,24 +1,27 @@
 import {Badge, Button, Card, CardBody, CardHeader, CardTitle, Col, Label, Row, Table} from "reactstrap";
 import {json, Link, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
+import TaskNav from "../layouts/TaskNav";
+import StatusNav from "../layouts/StatusNav";
 
 export default function StatusFlowList(){
     const flows = useLoaderData();
     return(
         <>
+
             <div className="content">
                 <Row>
+
                     <Col md="12">
                         <Card>
-                            <CardHeader>
-                                <Row>
-                                    <Col md="6"><CardTitle tag="h4">Estados de Actividades</CardTitle></Col>
-                                    <Col md="6" className="mr-auto">
-                                        <Button><Link to="new">Adiconar Fluxo</Link></Button>
-                                        <Button><Link to="/admin/statusFlow">Fluxo de Estados</Link></Button>
-                                        <Button><Link to="/admin/statusFlow/new">Adicionar Fluxo</Link></Button>
 
-                                    </Col>
+                            <CardHeader>
+                                <StatusNav></StatusNav>
+                                <Row>
+                                    <Col md="6">
+
+                                        <CardTitle tag="strong">Estados de Actividades</CardTitle></Col>
+
                                 </Row>
 
 

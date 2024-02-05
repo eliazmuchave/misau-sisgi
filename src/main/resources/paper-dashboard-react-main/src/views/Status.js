@@ -3,6 +3,7 @@ import {
 } from "reactstrap";
 import {Form, json, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
+import StatusNav from "../layouts/StatusNav";
 
 export default function Status() {
     const data = useLoaderData();
@@ -13,8 +14,9 @@ export default function Status() {
 
                 <Col md="12">
                     <Card className="card-user">
+                        <StatusNav></StatusNav>
                         <CardHeader>
-                            <CardTitle tag="h5">Registar Estados de Actividades</CardTitle>
+                            <CardTitle tag="strong">Registar Estados de Actividades</CardTitle>
                         </CardHeader>
                         <CardBody>
                             <Form method={data && data.id ? "PATCH" : "POST"}>

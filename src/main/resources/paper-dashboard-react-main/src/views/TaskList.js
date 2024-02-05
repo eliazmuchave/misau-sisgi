@@ -3,6 +3,7 @@ import {json, Link, useLoaderData} from "react-router-dom";
 import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import {format} from "date-fns";
 import {useState} from "react";
+import TaskNav from "../layouts/TaskNav";
 
 export default function TaskList() {
     const tasks = useLoaderData();
@@ -46,13 +47,11 @@ export default function TaskList() {
             <Row>
                 <Col md="12">
                     <Card>
+                        <TaskNav></TaskNav>
                         <CardHeader>
                             <Row>
-                                <Col md="10"><CardTitle tag="h4">Lista Processos</CardTitle></Col>
-                                <Col md="2" className="mr-auto ml-auto">
-                                    <Button><Link to="new">Adiconar Processo</Link></Button>
+                                <Col md="10"><CardTitle tag="strong">Lista de Processos</CardTitle></Col>
 
-                                </Col>
                             </Row>
 
 

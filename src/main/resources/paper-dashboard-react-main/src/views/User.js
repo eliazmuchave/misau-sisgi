@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import {json, redirect, Form, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken, setAuthorizationToken} from "../util/AccessTokenUtil";
+import UsersNav from "../layouts/UsersNav";
 
 export default function User() {
     const responses = useLoaderData();
@@ -32,8 +33,9 @@ export default function User() {
 
                     <Col md="12">
                         <Card className="card-user">
+                            <UsersNav></UsersNav>
                             <CardHeader>
-                                <CardTitle tag="h5">Registar Utilizador</CardTitle>
+                                <CardTitle tag="strong">Registar Utilizador</CardTitle>
                             </CardHeader>
                             <CardBody>
                                 <Form method={data && data.id ? "PATCH" : "POST"}>

@@ -15,6 +15,7 @@ import {Form, json, redirect, useActionData, useLoaderData} from "react-router-d
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
 import StatusFlowSelect from "./StatusFlowSelect";
 import {format} from "date-fns";
+import TaskNav from "../layouts/TaskNav";
 
 export default function Task() {
 
@@ -27,8 +28,9 @@ export default function Task() {
 
                 <Col md="12">
                     <Card className="card-user">
+                        <TaskNav></TaskNav>
                         <CardHeader>
-                            <CardTitle tag="h5">Registo de Tarefas</CardTitle>
+                            <CardTitle tag="strong">Registo de Tarefas</CardTitle>
                         </CardHeader>
                         <CardBody>
                             <Form method={data && data?.id ? "PATCH" : "POST"}>

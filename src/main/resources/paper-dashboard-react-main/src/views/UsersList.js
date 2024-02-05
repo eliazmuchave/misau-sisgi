@@ -1,6 +1,7 @@
-import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
+import {Badge, Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import {json, Link, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
+import UsersNav from "../layouts/UsersNav";
 
 export default function UsersList() {
 
@@ -12,13 +13,12 @@ export default function UsersList() {
             <Row>
                 <Col md="12">
                     <Card>
+                        <UsersNav></UsersNav>
                         <CardHeader>
-                            <Row>
-                                <Col md="10"><CardTitle tag="h4">Utilizadores</CardTitle></Col>
-                                <Col md="2" className="mr-auto ml-auto">
-                                    <Button><Link to="new">Adiconar Utilizador</Link></Button>
 
-                                </Col>
+                            <Row>
+                                <Col md="10"><CardTitle tag="strong">Lista de Utilizadores</CardTitle></Col>
+
                             </Row>
 
 
@@ -43,7 +43,9 @@ export default function UsersList() {
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
                                     <td>{user.roles.map(role => (
-                                        <span key={role.id}>{`${role.roleName}| `} </span>))}</td>
+
+                                        <Badge className="ml-2">{`${role.roleName}`}</Badge>
+                                       ))}</td>
                                     <td><Link to={`${user.id}/edit`}>Editar</Link></td>
                                 </tr>))}
 

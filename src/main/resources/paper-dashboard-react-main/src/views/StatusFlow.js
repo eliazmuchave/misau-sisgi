@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import StatusSelect from "../components/StatusSelect";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
+import StatusNav from "../layouts/StatusNav";
 
 export default function StatusFlow() {
 
@@ -26,7 +27,8 @@ export default function StatusFlow() {
                 <Col md="12">
                     <Card className="card-user">
                         <CardHeader>
-                            <CardTitle tag="h5">Registar Fluxo de Actividades</CardTitle>
+                            <StatusNav></StatusNav>
+                            <CardTitle tag="strong">Registar Fluxo de Actividades</CardTitle>
                         </CardHeader>
                         <CardBody>
                             <Form method={data && data.id ? "PATCH" : "POST"}>

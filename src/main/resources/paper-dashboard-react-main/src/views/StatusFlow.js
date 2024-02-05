@@ -96,7 +96,6 @@ export async function statusFlowAction({params, request}){
     const errors = {};
     const objData = Object.fromEntries(requestData);
     objData.statuses = requestData.getAll("statuses")
-    console.log(objData)
 
     const response = await  fetch("/api/statusFlow", {
         method: request.method,

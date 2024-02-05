@@ -16,16 +16,12 @@ import {
 import {json, redirect, Form, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken, setAuthorizationToken} from "../util/AccessTokenUtil";
 import UsersNav from "../layouts/UsersNav";
+import RolesSelect from "../components/RolesSelect";
 
 export default function User() {
-    const responses = useLoaderData();
+    const data = useLoaderData();
 
-    let data = {};
-    let roles = [];
-    if (responses) {
-        data = responses[0];
-        roles = responses[1];
-    }
+
     return (
         <>
             <div className="content">
@@ -84,25 +80,19 @@ export default function User() {
                                                 Nome Inválido
                                             </FormFeedback>
                                         </Col>
-                                        <Col className="pl-1" md="6">
+
+
+                                    </Row>
+                                    <Row>
+                                        <Col className="pr-1" md="6">
                                             <FormGroup>
-                                                <Label for="checkbox2" sm={2}>
+                                                <Label htmlFor="roles">
                                                     Roles
                                                 </Label>
-                                                <Col>
-
-                                                    {roles.map(role => (<FormGroup row key={role.id} row><Label check>
-                                                        <input type="checkbox" name="roles" value={role.id}></input>
-                                                        {role.roleName}
-
-                                                    </Label></FormGroup>))}
-
-
-                                                </Col>
+                                                <RolesSelect isMulti select = {data?.roles} ></RolesSelect>
                                             </FormGroup>
 
                                         </Col>
-
                                     </Row>
 
 
@@ -165,15 +155,10 @@ export async function userLoader({params}) {
 
 
     const token = getAuthorizationToken();
-    const response = Promise.all([
+    const response =
         fetch("/api/users/" + id, {
             headers: {"Authorization": `Bearer ${token}`}
-        }).then(resp => resp.json()),
-        fetch("/api/roles", {
-            headers: {"Authorization": `Bearer ${token}`}
-        }).then(resp => resp.json())
-
-    ]);
+        });
 
     return response;
 }

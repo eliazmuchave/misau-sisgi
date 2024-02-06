@@ -89,7 +89,7 @@ export default function User() {
                                                 <Label htmlFor="roles">
                                                     Roles
                                                 </Label>
-                                                <RolesSelect isMulti select = {data?.roles} ></RolesSelect>
+                                                <RolesSelect name="roles" id="roles" isMulti select = {data?.roles} ></RolesSelect>
                                             </FormGroup>
 
                                         </Col>

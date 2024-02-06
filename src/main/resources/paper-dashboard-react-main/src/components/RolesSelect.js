@@ -27,7 +27,7 @@ export default function RolesSelect(props){
 
     return (<>
 
-        <Select   value={props.select?.map(role => { return {
+        <Select  defaultValue={props.select?.map(role => { return {
             label: role?.roleName, value: role?.id
         }})}  {...props} options={roles.map(item => {
             return {label: item.roleName, value: item.id}

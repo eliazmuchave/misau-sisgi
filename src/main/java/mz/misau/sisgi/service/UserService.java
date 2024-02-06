@@ -30,9 +30,10 @@ public class UserService {
     }
 
     public User addNewUser(User user) {
-        User savedUser = userRepository.save(user);
+
         String password = PasswordGenerator.create(8);
         user.setPassword(password);
+        User savedUser = userRepository.save(user);
         notifyCredentials(user,password);
         return savedUser;
 

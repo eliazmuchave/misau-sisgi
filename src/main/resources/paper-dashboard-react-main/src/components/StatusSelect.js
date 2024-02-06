@@ -27,7 +27,7 @@ export default function StatusSelect(props){
 
     return (<>
 
-        <Select   value={status.map(item => {
+        <Select   defaultValue={status.map(item => {
             return {label: item.nameStatus, value: item.id}
         }).find(option => option.value === props.select?.id)}  {...props} options={status.map(item => {
             return {label: item.nameStatus, value: item.id}

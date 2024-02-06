@@ -24,6 +24,8 @@ import TaskList, {tasksLoader} from "./views/TaskList";
 import StatusFlow, {statusFlowAction} from "./views/StatusFlow";
 import StatusFlowList, {statusFlowLoader} from "./views/StatusFlowList";
 import ErrorPage from "./views/ErrorPage";
+import ForwardingAgentList, {agentsLoader} from "./views/ForwardingAgentList";
+import ForwardingAgent, {addAgentAction} from "./views/ForwardingAgent";
 
 
 const router = createBrowserRouter([
@@ -69,6 +71,13 @@ const router = createBrowserRouter([
                     {index: true, element: <UsersList></UsersList>, loader: usersLoader},
                     {path: "new", element: <UserPage></UserPage>, action: addUserAction},
                     {path: ":id/edit", element: <UserPage></UserPage>, action: addUserAction, loader: userLoader}
+                ]
+            },
+            {
+                path: "forwardingAgents", children: [
+                    {index: true, element: <ForwardingAgentList></ForwardingAgentList>, loader: agentsLoader},
+                    {path: "new", element: <ForwardingAgent></ForwardingAgent>, action: addAgentAction},
+                    {path: ":id/edit", element: <ForwardingAgent></ForwardingAgent>, action: addAgentAction, loader: agentsLoader}
                 ]
             }
         ],

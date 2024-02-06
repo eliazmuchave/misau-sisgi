@@ -55,5 +55,13 @@ var routes = [
     component: <TableList />,
     layout: "/admin",
   },
+
+  {
+    path: "/forwardingAgents",
+    name: "Despachantes",
+    icon: "fa fa-thermometer-quarter",
+    component: <TableList />,
+    layout: "/admin",
+  },
 ];
 export default routes;

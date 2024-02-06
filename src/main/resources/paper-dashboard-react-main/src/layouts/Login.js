@@ -52,7 +52,7 @@ export default function Login() {
                             </FormGroup>
                             <FormGroup>
                                 <label>Password</label>
-                                <Input type="password" name="password" id="password" invalid={actionData.password} defaultValue=""/>
+                                <Input type="password" name="password" id="password" invalid={actionData.password} defaultValue={actionData.authenticationFailed? "": ""}/>
                                 <FormFeedback>
                                     <span><strong>A password fornecida é inválida</strong> - Por favor, verifique e tente novamente</span>
                                 </FormFeedback>
@@ -102,7 +102,7 @@ export async function loginAction({params, request}) {
     if (response.status == 400) {
         errors.authenticationFailed = true;
     }
-    if (Object.keys(errors).length > 1) {
+    if (Object.keys(errors).length > 1 || errors?.authenticationFailed === true) {
         return errors;
     }
     if (!response.ok) {

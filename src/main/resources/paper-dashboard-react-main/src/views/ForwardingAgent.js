@@ -4,6 +4,7 @@ import {
 import {Form, json, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
 import StatusNav from "../layouts/StatusNav";
+import SettingsNav from "../layouts/SettingsNav";
 
 export default function ForwardingAgent() {
     const data = useLoaderData();
@@ -14,7 +15,7 @@ export default function ForwardingAgent() {
 
                 <Col md="12">
                     <Card className="card-user">
-                        <StatusNav></StatusNav>
+                        <SettingsNav></SettingsNav>
                         <CardHeader>
                             <CardTitle tag="strong">Registar Estados de Actividades</CardTitle>
                         </CardHeader>

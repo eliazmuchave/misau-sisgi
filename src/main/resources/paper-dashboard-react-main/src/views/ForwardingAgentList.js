@@ -2,6 +2,7 @@ import {getAuthorizationToken} from "../util/AccessTokenUtil";
 import {json, Link, useLoaderData} from "react-router-dom";
 import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import StatusNav from "../layouts/StatusNav";
+import SettingsNav from "../layouts/SettingsNav";
 
 export default function ForwardingAgentList (){
     const agents = useLoaderData();
@@ -16,7 +17,7 @@ export default function ForwardingAgentList (){
                 <Col md="12">
 
                     <Card>
-                        <StatusNav></StatusNav>
+                        <SettingsNav></SettingsNav>
                         <CardHeader>
                             <Row>
                                 <Col md="6"><CardTitle tag="strong">Lista de Despachantes</CardTitle></Col>

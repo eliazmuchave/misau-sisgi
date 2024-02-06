@@ -2,9 +2,10 @@ import {getAuthorizationToken} from "../util/AccessTokenUtil";
 import {json, Link, useLoaderData} from "react-router-dom";
 import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import StatusNav from "../layouts/StatusNav";
+import SettingsNav from "../layouts/SettingsNav";
 
-export default function ForwardingAgentList (){
-    const agents = useLoaderData();
+export default function GoodsList (){
+    const goods = useLoaderData();
 
     return (<>
 
@@ -16,10 +17,10 @@ export default function ForwardingAgentList (){
                 <Col md="12">
 
                     <Card>
-                        <StatusNav></StatusNav>
+                        <SettingsNav></SettingsNav>
                         <CardHeader>
                             <Row>
-                                <Col md="6"><CardTitle tag="strong">Lista de Despachantes</CardTitle></Col>
+                                <Col md="6"><CardTitle tag="strong">Lista de Bens</CardTitle></Col>
 
                             </Row>
 
@@ -37,10 +38,10 @@ export default function ForwardingAgentList (){
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {agents.map(agent => (<tr key={agent.id}>
-                                    <td>{agent.name}</td>
+                                {goods.map(good => (<tr key={good.id}>
+                                    <td>{good.name}</td>
 
-                                    <td><Link to={`${agent.id}/edit`}>Editar</Link></td>
+                                    <td><Link to={`${good.id}/edit`}>Editar</Link></td>
                                 </tr>))}
 
 
@@ -56,17 +57,17 @@ export default function ForwardingAgentList (){
 
 }
 
-export async function agentsLoader({request}) {
+export async function goodsListLoader({request}) {
 
     const token = getAuthorizationToken();
-    const response = await fetch("/api/forwardingAgents", {
+    const response = await fetch("/api/goods", {
         headers: {
             "Authorization": `Bearer ${token}`
         }
     });
 
     if (!response.ok) {
-        throw json({message: "Could not load status"}, {status: 500})
+        throw json({message: "Não foi possível carregar a lista de bens"}, {status: 500})
     }
 
 

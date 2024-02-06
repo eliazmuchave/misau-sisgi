@@ -26,6 +26,8 @@ import StatusFlowList, {statusFlowLoader} from "./views/StatusFlowList";
 import ErrorPage from "./views/ErrorPage";
 import ForwardingAgentList, {agentsLoader} from "./views/ForwardingAgentList";
 import ForwardingAgent, {addAgentAction} from "./views/ForwardingAgent";
+import GoodsList, {goodsListLoader} from "./views/GoodsList";
+import Goods, {addGoodsAction, goodsLoader} from "./views/Goods";
 
 
 const router = createBrowserRouter([
@@ -78,6 +80,13 @@ const router = createBrowserRouter([
                     {index: true, element: <ForwardingAgentList></ForwardingAgentList>, loader: agentsLoader},
                     {path: "new", element: <ForwardingAgent></ForwardingAgent>, action: addAgentAction},
                     {path: ":id/edit", element: <ForwardingAgent></ForwardingAgent>, action: addAgentAction, loader: agentsLoader}
+                ]
+            },
+            {
+                path: "goods", children: [
+                    {index: true, element: <GoodsList></GoodsList>, loader: goodsListLoader},
+                    {path: "new", element: <Goods></Goods>, action: addGoodsAction},
+                    {path: ":id/edit", element: <Goods></Goods>, action: addGoodsAction, loader: goodsLoader}
                 ]
             }
         ],

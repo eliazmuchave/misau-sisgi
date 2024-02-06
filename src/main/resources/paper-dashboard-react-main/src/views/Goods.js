@@ -4,8 +4,9 @@ import {
 import {Form, json, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
 import StatusNav from "../layouts/StatusNav";
+import SettingsNav from "../layouts/SettingsNav";
 
-export default function ForwardingAgent() {
+export default function Goods() {
     const data = useLoaderData();
     const errors = useActionData();
     return (<>
@@ -14,9 +15,9 @@ export default function ForwardingAgent() {
 
                 <Col md="12">
                     <Card className="card-user">
-                        <StatusNav></StatusNav>
+                        <SettingsNav></SettingsNav>
                         <CardHeader>
-                            <CardTitle tag="strong">Registar Estados de Actividades</CardTitle>
+                            <CardTitle tag="strong">Registar Bens</CardTitle>
                         </CardHeader>
                         <CardBody>
                             <Form method={data && data.id ? "PATCH" : "POST"}>
@@ -66,11 +67,11 @@ export default function ForwardingAgent() {
     </>);
 }
 
-export async function addAgentAction({request, params}) {
+export async function addGoodsAction({request, params}) {
     const id = params.id;
-    let url = "/api/forwardingAgents";
+    let url = "/api/goods";
     if (id) {
-        url = `/api/forwardingAgents/${id}`;
+        url = `/api/goods/${id}`;
     }
     const data = await request.formData();
     const errors = {};
@@ -92,15 +93,15 @@ export async function addAgentAction({request, params}) {
     if (!response.ok) {
         throw json({message: "Could not send the request"}, {status: 500});
     }
-    return redirect("/admin/forwardingAgents")
+    return redirect("/admin/goods")
 
 }
 
-export async function agentLoader({params}) {
+export async function goodsLoader({params}) {
     const id = params.id;
     const token = getAuthorizationToken();
-    const url = `/api/forwardingAgents/${id}`;
-    const response = await fetch("/api/forwardingAgents/"+id, {
+    const url = `/api/goods/${id}`;
+    const response = await fetch("/api/goods/"+id, {
         headers: {
             "Authorization": `Bearer ${token}`
         }

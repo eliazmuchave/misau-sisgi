@@ -30,6 +30,8 @@ import GoodsList, {goodsListLoader} from "./views/GoodsList";
 import Goods, {addGoodsAction, goodsLoader} from "./views/Goods";
 import FinancierList, {financierLoader} from "./views/FinancierList";
 import Financier, {addFinancierAction} from "./views/Financier";
+import BeneficiariesList, {beneficiariesLoader} from "./views/BeneficiariesList";
+import Beneficiaries, {addBeneficiariesAction, beneficiaryLoader} from "./views/Beneficiaries";
 
 
 const router = createBrowserRouter([
@@ -96,6 +98,14 @@ const router = createBrowserRouter([
                     {index: true, element: <FinancierList></FinancierList>, loader: financierLoader},
                     {path: "new", element:<Financier></Financier>, action: addFinancierAction},
                     {path: ":id/edit", element: <Financier></Financier>, action: addFinancierAction, loader: financierLoader}
+                ]
+            },
+
+            {
+                path: "beneficiaries", children: [
+                    {index: true, element: <BeneficiariesList></BeneficiariesList>, loader: beneficiariesLoader},
+                    {path: "new", element:<Beneficiaries></Beneficiaries>, action: addBeneficiariesAction},
+                    {path: ":id/edit", element: <Beneficiaries></Beneficiaries>, action: addBeneficiariesAction, loader: beneficiaryLoader}
                 ]
             },
 

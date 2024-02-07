@@ -25,4 +25,11 @@ public class FinancierController {
     public Financier getById(@RequestBody Financier financier){
         return financierRepository.save(financier);
     }
+
+    @PatchMapping("/{id}")
+    public Financier getById(@PathVariable Long id){
+        Financier financier = financierRepository.findById(id).orElse(new Financier());
+        financierRepository.save(financier);
+        return financier;
+    }
 }

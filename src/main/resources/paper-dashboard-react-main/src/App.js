@@ -28,6 +28,8 @@ import ForwardingAgentList, {agentsLoader} from "./views/ForwardingAgentList";
 import ForwardingAgent, {addAgentAction} from "./views/ForwardingAgent";
 import GoodsList, {goodsListLoader} from "./views/GoodsList";
 import Goods, {addGoodsAction, goodsLoader} from "./views/Goods";
+import FinancierList, {financierLoader} from "./views/FinancierList";
+import Financier, {addFinancierAction} from "./views/Financier";
 
 
 const router = createBrowserRouter([
@@ -88,7 +90,15 @@ const router = createBrowserRouter([
                     {path: "new", element: <Goods></Goods>, action: addGoodsAction},
                     {path: ":id/edit", element: <Goods></Goods>, action: addGoodsAction, loader: goodsLoader}
                 ]
-            }
+            },
+            {
+                path: "financiers", children: [
+                    {index: true, element: <FinancierList></FinancierList>, loader: financierLoader},
+                    {path: "new", element:<Financier></Financier>, action: addFinancierAction},
+                    {path: ":id/edit", element: <Financier></Financier>, action: addFinancierAction, loader: financierLoader}
+                ]
+            },
+
         ],
     },
 ]);

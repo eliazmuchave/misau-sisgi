@@ -20,6 +20,14 @@ export default function SettingsNav(){
                 <NavLink className="btn ml-3 btn-link" to="/admin/goods/new" ><i className="fa fa-plus"></i> Novo Bem</NavLink>
             </NavItem>
 
+            <NavItem>
+                <NavLink className="btn ml-3 btn-link" to="/admin/financiers"><i className="fa fa-table"></i> Financiadores</NavLink>
+            </NavItem>
+
+            <NavItem>
+                <NavLink className="btn ml-3 btn-link" to="/admin/financiers/new" ><i className="fa fa-plus"></i> Novo Financiador</NavLink>
+            </NavItem>
+
         </Nav>
     </>);
 }

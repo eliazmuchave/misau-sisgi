@@ -1,4 +1,4 @@
-package mz.misau.sisgi.controller.workflow;
+package mz.misau.sisgi.entity.workflow;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,14 +26,14 @@ public class ImportProcess extends WorkflowTask {
     @Column(name = "quantidade")
     private int quantidade;
 
-    @Column(name = "previsao_chegada")
-    private Date previsaoChegada;
+    @Column(name = "arrival_forecast")
+    private Date arrivalForecast;
 
-    @Column(name = "data_chegada")
-    private Date dataChegada;
+    @Column(name = "arrival_date")
+    private Date arrivalDate;
 
-    @Column(name = "data_levantamento")
-    private Date dataLevantamento;
+    @Column(name = "pcikup_date")
+    private Date pickup_date;
 
     @ManyToOne
     @JoinColumn(name = "forwarding_agent_id")

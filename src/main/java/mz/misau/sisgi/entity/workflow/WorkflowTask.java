@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "workflow_task")
 @Data
 @ToString(exclude="predictedStatusFlow")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class WorkflowTask extends BaseEntity {
 
     @Column(name = "name", nullable = false)

@@ -32,6 +32,8 @@ import FinancierList, {financierLoader} from "./views/FinancierList";
 import Financier, {addFinancierAction} from "./views/Financier";
 import BeneficiariesList, {beneficiariesLoader} from "./views/BeneficiariesList";
 import Beneficiaries, {addBeneficiariesAction, beneficiaryLoader} from "./views/Beneficiaries";
+import ImportProcess, {importProcessAction, importProcessLoader} from "./views/ImportProcess";
+import ImportProcessList, {importProcessListLoader} from "./views/ImportProcessList";
 
 
 const router = createBrowserRouter([
@@ -106,6 +108,14 @@ const router = createBrowserRouter([
                     {index: true, element: <BeneficiariesList></BeneficiariesList>, loader: beneficiariesLoader},
                     {path: "new", element:<Beneficiaries></Beneficiaries>, action: addBeneficiariesAction},
                     {path: ":id/edit", element: <Beneficiaries></Beneficiaries>, action: addBeneficiariesAction, loader: beneficiaryLoader}
+                ]
+            },
+
+            {
+                path: "importProcess", children: [
+                    {index: true, element: <ImportProcessList></ImportProcessList>, loader: importProcessListLoader},
+                    {path: "new", element:<ImportProcess></ImportProcess>, action: importProcessAction},
+                    {path: ":id/edit", element: <ImportProcess></ImportProcess>, action: importProcessAction, loader: importProcessLoader}
                 ]
             },
 

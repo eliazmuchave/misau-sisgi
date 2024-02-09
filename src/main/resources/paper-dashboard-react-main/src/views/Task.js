@@ -122,7 +122,7 @@ export async function taskAction({request}) {
     if (!response.ok) {
         throw json({message: "Could not send the request"}, {status: 500});
     }
-    return redirect("/admin/status")
+    return redirect("/admin/tasks")
 }
 
 export async function taskLoader({params, request}){

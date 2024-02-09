@@ -58,8 +58,8 @@ var routes = [
 
   {
     path: "/forwardingAgents",
-    name: "Despachantes",
-    icon: "fa fa-thermometer-quarter",
+    name: "Parametrização",
+    icon: "fa fa-cogs",
     component: <TableList />,
     layout: "/admin",
   },

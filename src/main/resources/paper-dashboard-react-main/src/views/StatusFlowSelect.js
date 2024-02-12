@@ -9,8 +9,6 @@ export default function StatusFlowSelect(props) {
     const [statusFlow, setStatusFlow] = useState([]);
     const token = getAuthorizationToken();
 
-
-
     useEffect(() => {
         const loadData = async () => {
             const response = await fetch("/api/statusFlow",
@@ -29,9 +27,9 @@ export default function StatusFlowSelect(props) {
 
     return (<>
 
-        <Select  value={statusFlow.map(item => {
-            return {label: item.name, value: item.id}
-        }).find(option => option.value === props.select?.id)}  {...props} options={statusFlow.map(item => {
+        <Select defaultValue={
+            {label: props.selected?.name, value: props.selected?.id}
+        }  {...props} options={statusFlow.map(item => {
             return {label: item.name, value: item.id}
         })}></Select>
     </>);

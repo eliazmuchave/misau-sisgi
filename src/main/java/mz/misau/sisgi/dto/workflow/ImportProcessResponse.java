@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 public class ImportProcessResponse {
     private Long id;
-    private String name;
+    private String taskName;
     private Date startDate;
     private Date expectedEndDate;
     private Date created;
@@ -28,7 +28,7 @@ public class ImportProcessResponse {
     private Date arrivalForecast;
     private Date arrivalDate;
     private Date pickupDate;
-    private PredictedStatusFlowResponse workflow;
+    private PredictedStatusFlowResponse predictedStatusFlow;
     private ForwardingAgent forwardingAgent;
     private Goods goods;
     private Beneficiary beneficiary;

@@ -27,9 +27,7 @@ export default function AgentSelect(props){
 
     return (<>
 
-        <Select  defaultValue={props.selected?.map(agent => { return {
-            label: agent?.name, value: agent?.id
-        }})}  {...props} options={agents.map(agent => {
+        <Select  defaultValue={{label: props.selected?.name, value: props.selected?.id}}  {...props} options={agents.map(agent => {
             return {label: agent.name, value: agent.id}
         })}></Select>
     </>);

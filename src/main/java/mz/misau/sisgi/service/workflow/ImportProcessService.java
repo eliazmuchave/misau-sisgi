@@ -3,17 +3,106 @@ package mz.misau.sisgi.service.workflow;
 import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.comunication.NotificationRepository;
-import mz.misau.sisgi.repository.workflow.ImportProcessRepository;
-import mz.misau.sisgi.repository.workflow.NotifiableRepository;
-import mz.misau.sisgi.repository.workflow.PredictedStatusFlowRepository;
-import mz.misau.sisgi.repository.workflow.WorkflowTaskRepository;
+import mz.misau.sisgi.dto.workflow.ImportProcessRequest;
+import mz.misau.sisgi.dto.workflow.ImportProcessResponse;
+import mz.misau.sisgi.dto.workflow.PredictedStatusFlowResponse;
+import mz.misau.sisgi.entity.workflow.*;
+import mz.misau.sisgi.repository.workflow.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Component
-public class ImportProcessService extends WorkflowTaskService{
+public class ImportProcessService extends WorkflowTaskService {
     private final ImportProcessRepository importProcessRepository;
-    public ImportProcessService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository, JwtUtil jwtUtil, ImportProcessRepository importProcessRepository) {
+    private final BeneficiaryRepository beneficiaryRepository;
+    private final ForwardingAgentRepository forwardingAgentRepository;
+
+    private final PredictedStatusFlowRepository predictedStatusFlowRepository;
+
+    private final FinancierRepository financierRepository;
+    private final GoodsRepository goodsRepository;
+
+    public ImportProcessService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository, JwtUtil jwtUtil, ImportProcessRepository importProcessRepository, BeneficiaryRepository beneficiaryRepository, ForwardingAgentRepository forwardingAgentRepository, FinancierRepository financierRepository, GoodsRepository goodsRepository) {
         super(workflowTaskRepository, predictedStatusFlowRepository, emailService, notificationRepository, notifiableRepository, jwtUtil);
         this.importProcessRepository = importProcessRepository;
+        this.beneficiaryRepository = beneficiaryRepository;
+        this.forwardingAgentRepository = forwardingAgentRepository;
+        this.predictedStatusFlowRepository = predictedStatusFlowRepository;
+        this.financierRepository = financierRepository;
+        this.goodsRepository = goodsRepository;
+    }
+
+    public ImportProcessResponse add(ImportProcessRequest importProcessRequest){
+       return add(importProcessRequest, new ImportProcess());
+    }
+    public ImportProcessResponse add(ImportProcessRequest importProcessRequest, ImportProcess importProcess) {
+
+        BeanUtils.copyProperties(importProcessRequest, importProcess);
+
+
+        if (importProcessRequest.getBeneficiaryId() != null) {
+            Beneficiary beneficiary = beneficiaryRepository.findById(importProcessRequest.getBeneficiaryId()).get();
+            importProcess.setBeneficiary(beneficiary);
+        }
+
+        if (importProcessRequest.getFinanciaryId() != null) {
+            Financier financier = financierRepository.findById(importProcessRequest.getFinanciaryId()).get();
+            importProcess.setFinancier(financier);
+
+        }
+
+        if (importProcessRequest.getGoodsId() != null) {
+            Goods goods = goodsRepository.findById(importProcessRequest.getGoodsId()).get();
+            importProcess.setGoods(goods);
+        }
+
+        if (importProcessRequest.getForwardingAgentId() != null) {
+            ForwardingAgent forwardingAgent = forwardingAgentRepository.findById(importProcessRequest.getForwardingAgentId()).get();
+            importProcess.setForwardingAgent(forwardingAgent);
+        }
+
+        if (importProcessRequest.getStatusFlowId() != null) {
+            PredictedStatusFlow flow = predictedStatusFlowRepository.findById(importProcessRequest.getStatusFlowId()).get();
+            System.out.println(flow);
+            importProcess.setPredictedStatusFlow(flow);
+        }
+        importProcessRepository.save(importProcess);
+        return convertToResponse(importProcess);
+    }
+
+    private ImportProcessResponse convertToResponse(ImportProcess importProcess) {
+        ImportProcessResponse importProcessResponse = new ImportProcessResponse();
+        BeanUtils.copyProperties(importProcess, importProcessResponse);
+        PredictedStatusFlowResponse predictedStatusFlowResponse = new PredictedStatusFlowResponse();
+        BeanUtils.copyProperties(importProcess.getPredictedStatusFlow(), predictedStatusFlowResponse);
+        importProcessResponse.setPredictedStatusFlow(predictedStatusFlowResponse);
+        return importProcessResponse;
+    }
+
+    public List<ImportProcess> getAllProcess() {
+        return importProcessRepository.findAll();
+    }
+
+    public List<ImportProcessResponse> getAllResponse() {
+        List<ImportProcess> all = getAllProcess();
+        List<ImportProcessResponse> responses = all.stream().map(process -> convertToResponse(process)).collect(Collectors.toList());
+        return responses;
+    }
+
+    public ImportProcessResponse getProcessById(Long id) {
+        ImportProcess importProcess = importProcessRepository.findById(id).get();
+         return convertToResponse(importProcess);
+
+    }
+
+    public ImportProcessResponse update(ImportProcessRequest importProcessRequest, Long id) {
+
+        ImportProcess importProcess = importProcessRepository.findById(id).get();
+         return  add(importProcessRequest, importProcess);
+
     }
 }

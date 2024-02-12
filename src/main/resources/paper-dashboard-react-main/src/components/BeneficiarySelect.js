@@ -27,9 +27,7 @@ export default function BeneficiarySelect(props){
 
     return (<>
 
-        <Select  defaultValue={props.selected?.map(beneficiary => { return {
-            label: beneficiary?.name, value: beneficiary?.id
-        }})}  {...props} options={beneficiaries.map(beneficiary => {
+        <Select  defaultValue={{label: props.selected?.name, value: props.selected?.id}}  {...props} options={beneficiaries.map(beneficiary => {
             return {label: beneficiary.name, value: beneficiary.id}
         })}></Select>
     </>);

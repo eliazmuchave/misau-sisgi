@@ -27,9 +27,7 @@ export default function FinanciarySelect(props){
 
     return (<>
 
-        <Select  defaultValue={props.selected?.map(financiary => { return {
-            label: financiary?.name, value: financiary?.id
-        }})}  {...props} options={financiaries.map(financiary => {
+        <Select  defaultValue={{label: props.selected?.name, value: props.selected?.id}}  {...props} options={financiaries.map(financiary => {
             return {label: financiary.name, value: financiary.id}
         })}></Select>
     </>);

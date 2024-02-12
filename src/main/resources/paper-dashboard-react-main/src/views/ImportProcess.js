@@ -1,15 +1,5 @@
 import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    CardTitle,
-    Col,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Label,
-    Row
+    Button, Card, CardBody, CardHeader, CardTitle, Col, FormFeedback, FormGroup, Input, Label, Row
 } from "reactstrap";
 import {Form, json, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
@@ -19,6 +9,8 @@ import TaskNav from "../layouts/TaskNav";
 import GoodsSelect from "../components/GoodsSelect";
 import BeneficiarySelect from "../components/BeneficiarySelect";
 import FinanciarySelect from "../components/FinanciarySelect";
+import ForwardingAgent from "./ForwardingAgent";
+import AgentSelect from "../components/AgentSelect";
 
 export default function ImportProcess() {
 
@@ -50,7 +42,8 @@ export default function ImportProcess() {
 
                                         <FormGroup>
                                             <label>Número do Processo</label>
-                                            <Input name="processNumber" id="processNumber" invalid={errors?.processNumber}
+                                            <Input name="processNumber" id="processNumber"
+                                                   invalid={errors?.processNumber}
                                                    defaultValue={data ? data?.processNumber : ""}
                                                    type="text"
                                             />
@@ -58,14 +51,16 @@ export default function ImportProcess() {
                                             <FormFeedback>
                                                 <span><strong>Número Inválido</strong> - Número de processo inválido</span>
                                             </FormFeedback>
-                                            <FormGroup>
-                                                <label>Bem</label>
-                                                <GoodsSelect name = "goods" id = "goods" ></GoodsSelect>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <label>Bem</label>
+                                            <GoodsSelect selected={data ? data.goods : new {}} name="goodsId"
+                                                         id="goodsId"></GoodsSelect>
 
-                                                <FormFeedback>
-                                                    <span><strong>Bem não selecionado</strong> Selecione o bem</span>
-                                                </FormFeedback>
-                                            </FormGroup>
+                                            <FormFeedback>
+                                                <span><strong>Bem não selecionado</strong> Selecione o bem</span>
+                                            </FormFeedback>
+
                                             <FormFeedback>
                                                 <span><strong>Número Inválido</strong> - Número de Processo deve ter pelo menos três letras</span>
                                             </FormFeedback>
@@ -95,11 +90,10 @@ export default function ImportProcess() {
                                         </FormGroup>
 
 
-
                                         <FormGroup>
                                             <label>Data Início</label>
                                             <Input name="startDate" id="startDate" invalid={errors?.startDate}
-                                                   defaultValue={data ? format(data?.startDate,"yyyy-MM-dd") : ""}
+                                                   defaultValue={data ? format(data?.startDate, "yyyy-MM-dd") : ""}
                                                    type="date"
                                                    data-date-format="dd MM yyyy"
                                             />
@@ -109,14 +103,15 @@ export default function ImportProcess() {
                                         </FormGroup>
 
 
-
                                     </Col>
 
                                     <Col className="pr-1" md="6">
 
                                         <FormGroup>
                                             <label>Benefiário</label>
-                                            <BeneficiarySelect name = "beneficiary" id = "benefiary"></BeneficiarySelect>
+                                            <BeneficiarySelect selected={data ? data.beneficiary : new {}}
+                                                               name="beneficiaryId"
+                                                               id="benefiaryId"></BeneficiarySelect>
 
                                             <FormFeedback>
                                                 <span><strong>Benficiário não selecionado</strong> Selecione o Beneficiário</span>
@@ -125,7 +120,8 @@ export default function ImportProcess() {
 
                                         <FormGroup>
                                             <label>Financiador</label>
-                                            <FinanciarySelect name = "financiary" id = "financiary"></FinanciarySelect>
+                                            <FinanciarySelect selected={data ? data.financier : new {}} name="financiaryId"
+                                                              id="financiaryId"></FinanciarySelect>
 
                                             <FormFeedback>
                                                 <span><strong>Financiador não selecionado</strong> Selecione o financiador</span>
@@ -134,7 +130,9 @@ export default function ImportProcess() {
 
                                         <FormGroup>
                                             <label>Despachante </label>
-                                            <FinanciarySelect name = "agent" id = "agent"></FinanciarySelect>
+
+                                            <AgentSelect selected={data ? data.forwardingAgent : new {}}
+                                                         name="forwardingAgentId" id="forwardingAgentId"></AgentSelect>
 
                                             <FormFeedback>
                                                 <span><strong>Financiador não selecionado</strong> Selecione o financiador</span>
@@ -143,7 +141,8 @@ export default function ImportProcess() {
 
                                         <FormGroup>
                                             <Label>Fluxo da Tarefa</Label>
-                                            <StatusFlowSelect select={data?.workflow} name="statusFlow" id = "statusFlow" ></StatusFlowSelect>
+                                            <StatusFlowSelect selected={data? data?.predictedStatusFlow: new {}} name="statusFlowId"
+                                                              id="statusFlowId"></StatusFlowSelect>
 
                                         </FormGroup>
 
@@ -181,16 +180,17 @@ export default function ImportProcess() {
     </>);
 }
 
-export async function importProcessAction({request}) {
+export async function importProcessAction({request, params}) {
+    const id = params.id;
+    const url = id ? `/api/importProcess/${id}` : "/api/importProcess";
     const errors = {};
     const requestData = await request.formData();
     const task = Object.fromEntries(requestData);
+
     const token = getAuthorizationToken();
-    const response = await fetch("/api/importProcess", {
-        body: JSON.stringify(task), "method": request.method,
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+    const response = await fetch(url, {
+        body: JSON.stringify(task), "method": request.method, headers: {
+            "Authorization": `Bearer ${token}`, "Content-Type": "application/json"
 
         }
     });
@@ -208,7 +208,7 @@ export async function importProcessAction({request}) {
     return redirect("/admin/importProcess")
 }
 
-export async function importProcessLoader({params, request}){
+export async function importProcessLoader({params, request}) {
 
     const id = params.id;
     const token = getAuthorizationToken();
@@ -218,7 +218,7 @@ export async function importProcessLoader({params, request}){
         }
     });
 
-    if (!response.ok){
+    if (!response.ok) {
         throw json({message: "Não foi possível listar os processos de importação"}, {status: 500})
     }
     return response;

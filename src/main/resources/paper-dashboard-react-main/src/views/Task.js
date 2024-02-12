@@ -61,7 +61,7 @@ export default function Task() {
 
                                         <FormGroup>
                                             <Label>Fluxo da Tarefa</Label>
-                                        <StatusFlowSelect select={data?.workflow} name="statusFlow" id = "statusFlow" ></StatusFlowSelect>
+                                        <StatusFlowSelect selected={data?.workflow} name="statusFlow" id = "statusFlow" ></StatusFlowSelect>
 
                                         </FormGroup>
 

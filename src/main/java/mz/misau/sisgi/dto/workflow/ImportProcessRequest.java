@@ -1,12 +1,6 @@
 package mz.misau.sisgi.dto.workflow;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
-import mz.misau.sisgi.entity.workflow.Beneficiary;
-import mz.misau.sisgi.entity.workflow.Financier;
-import mz.misau.sisgi.entity.workflow.ForwardingAgent;
-import mz.misau.sisgi.entity.workflow.Goods;
 
 import java.util.Date;
 
@@ -31,7 +25,7 @@ public class ImportProcessRequest {
 
     private Date arrivalDate;
     private Date pickupDate;
-    private Long statusFlow;
+    private Long statusFlowId;
 
     private Long forwardingAgentId;
 
@@ -39,5 +33,6 @@ public class ImportProcessRequest {
 
     private Long beneficiaryId;
 
-    private Long financierId;
+    private Long financiaryId;
 }
+

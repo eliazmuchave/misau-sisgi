@@ -27,9 +27,9 @@ export default function GoodsSelect(props){
 
     return (<>
 
-        <Select  defaultValue={props.selected?.map(good => { return {
-            label: good?.name, value: good?.id
-        }})}  {...props} options={goods.map(good => {
+        <Select  defaultValue={  {
+            label: props.selected?.name, value: props.selected?.id
+        }}  {...props} options={goods.map(good => {
             return {label: good.name, value: good.id}
         })}></Select>
     </>);

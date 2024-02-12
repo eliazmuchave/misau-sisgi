@@ -2,7 +2,6 @@ package mz.misau.sisgi.entity.workflow;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import mz.misau.sisgi.entity.workflow.*;
 
 import java.util.Date;
 
@@ -11,20 +10,20 @@ import java.util.Date;
 @Data
 public class ImportProcess extends WorkflowTask {
 
-    @Column(name = "numero_processo")
-    private String numeroProcesso;
+    @Column(name = "process_number")
+    private String processNumber;
 
-    @Column(name = "factura")
-    private String factura;
+    @Column(name = "invoice")
+    private String invoice;
 
-    @Column(name = "valor")
-    private Double valor;
+    @Column(name = "value")
+    private Double value;
 
-    @Column(name = "moeda")
-    private String moeda;
+    @Column(name = "currency")
+    private String currency;
 
-    @Column(name = "quantidade")
-    private int quantidade;
+    @Column(name = "quantity")
+    private int quantity;
 
     @Column(name = "arrival_forecast")
     private Date arrivalForecast;
@@ -33,7 +32,7 @@ public class ImportProcess extends WorkflowTask {
     private Date arrivalDate;
 
     @Column(name = "pcikup_date")
-    private Date pickup_date;
+    private Date pickupDate;
 
     @ManyToOne
     @JoinColumn(name = "forwarding_agent_id")

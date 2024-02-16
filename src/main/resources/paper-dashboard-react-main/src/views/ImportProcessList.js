@@ -4,6 +4,7 @@ import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "re
 import {format} from "date-fns";
 import {useState} from "react";
 import TaskNav from "../layouts/TaskNav";
+import ProcessDetails from "../components/ProcessDetails";
 
 export default function ImportProcessList() {
     let tasks = useLoaderData();
@@ -30,6 +31,12 @@ export default function ImportProcessList() {
        const index = updatedData.findIndex((row) => row.id === taskId);
        updatedData[index] = updatedTask;
        setTaskData(updatedData);
+
+   }
+
+   function handleDetails(taskId){
+
+       <ProcessDetails></ProcessDetails>
 
    }
 
@@ -68,10 +75,12 @@ export default function ImportProcessList() {
                                 <tr>
                                     <th>Designação</th>
                                     <th>Estado</th>
+                                    <th></th>
                                     <th>Noficação</th>
                                     <th>Data Início</th>
                                     <th>Previsão Término</th>
                                     <th>Fluxo do Precesso</th>
+                                    <th>Detalhes</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -80,7 +89,7 @@ export default function ImportProcessList() {
                                     <td>{task?.taskName}</td>
                                     <td><span>
                                         {task?.currentStatus}
-                                        {task.workflow ? <button onClick={() => handleStatusForward(task?.id)}
+                                        {task.predictedStatusFlow ? <button onClick={() => handleStatusForward(task?.id)}
                                                                  className="btn-default btn btn-sm  ml-3"><i
                                             className=" fa fa-solid fa-forward"></i></button>:""}
 
@@ -90,9 +99,13 @@ export default function ImportProcessList() {
                                     </td>
                                     <td>{format(new Date(task.startDate), 'dd/MM/yyyy')}</td>
                                     <td>{format(new Date(task.expectedEndDate), 'dd/MM/yyyy')}</td>
-                                    <td>{task.workflow? task.workflow?.name:
+                                    <td>{task.predictedStatusFlow? task.predictedStatusFlow?.name:
                                         <Link to={`${task.id}/edit`} className="btn btn-sm btn-outline-secondary ml-3"><i
                                             className=" fa fa-solid fa-plus"></i></Link>}</td>
+
+                                    <td>
+                                        <ProcessDetails task={task}></ProcessDetails>
+                                    </td>
 
 
                                     <td><Link to={`${task.id}/edit`}>Editar</Link></td>

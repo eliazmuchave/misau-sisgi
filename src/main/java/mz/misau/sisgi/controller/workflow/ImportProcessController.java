@@ -1,16 +1,13 @@
 package mz.misau.sisgi.controller.workflow;
 
+import mz.misau.sisgi.dto.workflow.ArrivalAndPickupDateRequest;
 import mz.misau.sisgi.dto.workflow.ImportProcessRequest;
 import mz.misau.sisgi.dto.workflow.ImportProcessResponse;
-import mz.misau.sisgi.entity.workflow.ImportProcess;
-import mz.misau.sisgi.entity.workflow.WorkflowTask;
-import mz.misau.sisgi.repository.workflow.ImportProcessRepository;
 import mz.misau.sisgi.service.workflow.ImportProcessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.OutputKeys;
 import java.util.List;
 
 @RestController
@@ -61,5 +58,17 @@ public class ImportProcessController {
         ImportProcessResponse response = importProcessService.update(importProcessRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
+    }
+
+    @PatchMapping("/updateDates")
+    public ResponseEntity<ImportProcessResponse> updateArrivalAndPickupDate(@RequestBody ArrivalAndPickupDateRequest arrivalAndPickupDateRequest){
+
+      try{
+          ImportProcessResponse response = importProcessService.updateArrivalAndPickupDate(arrivalAndPickupDateRequest);
+
+          return ResponseEntity.status(HttpStatus.OK).body(response);
+      }catch (Exception e){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      }
     }
 }

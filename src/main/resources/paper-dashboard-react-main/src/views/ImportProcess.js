@@ -15,6 +15,7 @@ import AgentSelect from "../components/AgentSelect";
 export default function ImportProcess() {
 
     const data = useLoaderData();
+    const emptyData = {label: "DNAM", value: "1"};
     const errors = useActionData();
 
     return (<>
@@ -54,7 +55,7 @@ export default function ImportProcess() {
                                         </FormGroup>
                                         <FormGroup>
                                             <label>Bem</label>
-                                            <GoodsSelect selected={data ? data.goods : new {}} name="goodsId"
+                                            <GoodsSelect selected={data ? data.goods : emptyData} name="goodsId"
                                                          id="goodsId"></GoodsSelect>
 
                                             <FormFeedback>
@@ -105,11 +106,47 @@ export default function ImportProcess() {
 
                                     </Col>
 
-                                    <Col className="pr-1" md="6">
+                                    <Col className="pl-1" md="6">
+                                        <FormGroup>
+                                            <label>Previsão de Chegada</label>
+                                            <Input name="arrivalForecast" id="arrivalForecast" invalid={errors?.arrivalForecast}
+                                                   defaultValue={data?.arrivalForecast? format(data?.arrivalForecast, "yyyy-MM-dd") : ""}
+                                                   type="date"
+                                                   data-date-format="dd MM yyyy"
+                                            />
+                                            <FormFeedback>
+                                                <span><strong>Data Inválida</strong> - Data prevista para chegada Inválida</span>
+                                            </FormFeedback>
+                                        </FormGroup>
+
+                                        <FormGroup>
+                                            <label>Data de Chegada</label>
+                                            <Input name="arrivalDate" id="arrivalDate" invalid={errors?.arrivalDate}
+                                                   defaultValue={data?.arrivalDate? format(data?.arrivalDate, "yyyy-MM-dd") : ""}
+                                                   type="date"
+                                                   data-date-format="dd MM yyyy"
+                                            />
+                                            <FormFeedback>
+                                                <span><strong>Data Inválida </strong> - Data de chegada Inválida</span>
+                                            </FormFeedback>
+                                        </FormGroup>
+
+                                        <FormGroup>
+                                            <label>Data de Levantamento</label>
+                                            <Input name="pickupDate" id="pickupDate" invalid={errors?.pickupDate}
+                                                   defaultValue={data?.pickupDate? format(data?.pickupDate, "yyyy-MM-dd") : ""}
+                                                   type="date"
+                                                   data-date-format="dd MM yyyy"
+                                            />
+                                            <FormFeedback>
+                                                <span><strong>Data Inválida</strong> - Data de Levantamento  Inválida</span>
+                                            </FormFeedback>
+                                        </FormGroup>
+
 
                                         <FormGroup>
                                             <label>Benefiário</label>
-                                            <BeneficiarySelect selected={data ? data.beneficiary : new {}}
+                                            <BeneficiarySelect selected={data ? data.beneficiary :  emptyData}
                                                                name="beneficiaryId"
                                                                id="benefiaryId"></BeneficiarySelect>
 
@@ -120,7 +157,7 @@ export default function ImportProcess() {
 
                                         <FormGroup>
                                             <label>Financiador</label>
-                                            <FinanciarySelect selected={data ? data.financier : new {}} name="financiaryId"
+                                            <FinanciarySelect selected={data ? data.financier :  emptyData} name="financiaryId"
                                                               id="financiaryId"></FinanciarySelect>
 
                                             <FormFeedback>
@@ -131,7 +168,7 @@ export default function ImportProcess() {
                                         <FormGroup>
                                             <label>Despachante </label>
 
-                                            <AgentSelect selected={data ? data.forwardingAgent : new {}}
+                                            <AgentSelect selected={data ? data.forwardingAgent :  emptyData}
                                                          name="forwardingAgentId" id="forwardingAgentId"></AgentSelect>
 
                                             <FormFeedback>
@@ -141,7 +178,7 @@ export default function ImportProcess() {
 
                                         <FormGroup>
                                             <Label>Fluxo da Tarefa</Label>
-                                            <StatusFlowSelect selected={data? data?.predictedStatusFlow: new {}} name="statusFlowId"
+                                            <StatusFlowSelect selected={data? data?.predictedStatusFlow:  emptyData} name="statusFlowId"
                                                               id="statusFlowId"></StatusFlowSelect>
 
                                         </FormGroup>
@@ -155,7 +192,7 @@ export default function ImportProcess() {
                                 <Row>
 
 
-                                    <Col className="pr-1" md="6">
+                                    <Col className="pl-1" md="12">
                                         <div className="float-right">
                                             <Button
                                                 className="btn"

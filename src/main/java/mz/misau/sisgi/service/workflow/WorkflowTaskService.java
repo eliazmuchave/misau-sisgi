@@ -82,7 +82,7 @@ public class WorkflowTaskService {
         return response;
     }
 
-    private String getCurrentStatusName(WorkflowTask workflowTask) {
+    protected String getCurrentStatusName(WorkflowTask workflowTask) {
         int currentStatus = workflowTask.getCurrentStatus();
         PredictedStatusFlow predictedStatusFlow = workflowTask.getPredictedStatusFlow();
         if (predictedStatusFlow != null) {

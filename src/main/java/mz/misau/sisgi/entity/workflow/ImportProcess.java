@@ -31,7 +31,7 @@ public class ImportProcess extends WorkflowTask {
     @Column(name = "arrival_date")
     private Date arrivalDate;
 
-    @Column(name = "pcikup_date")
+    @Column(name = "pickup_date")
     private Date pickupDate;
 
     @ManyToOne

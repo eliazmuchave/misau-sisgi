@@ -83,7 +83,7 @@ export default function TaskList() {
 
                                     </span></td>
                                     <td>
-                                        <button onClick={() => handleNotificationSubscribe(task?.id)} className="btn btn-sm btn-default"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                                        <button onClick={() => handleNotificationSubscribe(task?.id)} className="btn btn-sm btn-default"><i className="fa fa-envelope" aria-hidden="true"></i></button>
                                     </td>
                                     <td>{format(new Date(task.startDate), 'dd/MM/yyyy')}</td>
                                     <td>{format(new Date(task.expectedEndDate), 'dd/MM/yyyy')}</td>

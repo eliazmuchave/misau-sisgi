@@ -3,6 +3,7 @@ package mz.misau.sisgi.service.workflow;
 import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.comunication.NotificationRepository;
+import mz.misau.sisgi.dto.workflow.ArrivalAndPickupDateRequest;
 import mz.misau.sisgi.dto.workflow.ImportProcessRequest;
 import mz.misau.sisgi.dto.workflow.ImportProcessResponse;
 import mz.misau.sisgi.dto.workflow.PredictedStatusFlowResponse;
@@ -12,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -80,6 +80,8 @@ public class ImportProcessService extends WorkflowTaskService {
         PredictedStatusFlowResponse predictedStatusFlowResponse = new PredictedStatusFlowResponse();
         BeanUtils.copyProperties(importProcess.getPredictedStatusFlow(), predictedStatusFlowResponse);
         importProcessResponse.setPredictedStatusFlow(predictedStatusFlowResponse);
+        String currentStatus = getCurrentStatusName(importProcess);
+        importProcessResponse.setCurrentStatus(currentStatus);
         return importProcessResponse;
     }
 
@@ -104,5 +106,31 @@ public class ImportProcessService extends WorkflowTaskService {
         ImportProcess importProcess = importProcessRepository.findById(id).get();
          return  add(importProcessRequest, importProcess);
 
+    }
+
+    public ImportProcessResponse updateArrivalAndPickupDate(ArrivalAndPickupDateRequest arrivalAndPickupDateRequest) {
+        Long id = arrivalAndPickupDateRequest.getId();
+        ImportProcess process = null;
+        if(id != null){
+            try {
+                process = importProcessRepository.findById(id).get();
+                if (arrivalAndPickupDateRequest.getArrivalDate() != null){
+                    process.setArrivalDate(arrivalAndPickupDateRequest.getArrivalDate());
+                }
+
+                if (arrivalAndPickupDateRequest.getPickupDate() != null){
+                    process.setPickupDate(arrivalAndPickupDateRequest.getPickupDate());
+                }
+
+
+            }catch (NullPointerException e){
+
+            }
+
+        }
+
+        importProcessRepository.save(process);
+
+        return convertToResponse(process);
     }
 }

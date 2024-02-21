@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import classes from "./Login.module.css";
 import "assets/scss/paper-dashboard/cards/_card-login.scss";
-import {getAuthorizationToken, setAuthorizationToken} from "../util/AccessTokenUtil";
+import {getAuthorizationToken, setAuthenticatedUsername, setAuthorizationToken} from "../util/AccessTokenUtil";
 
 export default function Login() {
     let actionData = useActionData();
@@ -24,11 +24,11 @@ export default function Login() {
 
     return (
         <div className={classes.container}>
-            <Col md="4">
-                <Card className="card-login">
+            <Col md="3" >
+                <Card className={classes.loginBox}>
                     <CardHeader>
-                        <CardTitle>
-                            <h5>Login</h5>
+                        <CardTitle className="align-">
+                            <h5 className="text-center">Autentique-se</h5>
                         </CardTitle>
                     </CardHeader>
                     <CardBody>
@@ -38,7 +38,7 @@ export default function Login() {
                             </Alert>}
 
                             {!actionData.authenticationFailed && <Alert color="info">
-                                <span><strong>Autenticação</strong> - Por favor, autentique-se usando E-mail e Password </span>
+                                <span><strong>Autenticação</strong> - Por favor, autentique-se usando seu Email e Senha </span>
                             </Alert>}
                             <FormGroup>
                                 <label htmlFor="email" className="control-label">
@@ -51,7 +51,7 @@ export default function Login() {
 
                             </FormGroup>
                             <FormGroup>
-                                <label>Password</label>
+                                <label>Senha</label>
                                 <Input type="password" name="password" id="password" invalid={actionData.password} defaultValue={actionData.authenticationFailed? "": ""}/>
                                 <FormFeedback>
                                     <span><strong>A password fornecida é inválida</strong> - Por favor, verifique e tente novamente</span>
@@ -59,13 +59,13 @@ export default function Login() {
 
                             </FormGroup>
 
-                            <Row>
-                                <div className="update ml-auto mr-auto">
-                                    <Button className="btn" color="success" type="submit">
+                            <FormGroup>
+
+                                    <Button block  className="btn" color="success" type="submit">
                                         Entrar
                                     </Button>
-                                </div>
-                            </Row>
+
+                            </FormGroup>
                         </Form>
                     </CardBody>
                 </Card>
@@ -111,6 +111,7 @@ export async function loginAction({params, request}) {
     const responseData = await response.json();
 
     setAuthorizationToken(responseData.token);
+    setAuthenticatedUsername(email);
 
     return redirect("/admin");
 

@@ -19,12 +19,10 @@ import mz.misau.sisgi.repository.workflow.WorkflowTaskRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -161,17 +159,17 @@ public class WorkflowTaskService {
     }
 
     public void notifyMe(@NotNull WorkflowTask workflowTask, @Email String userEmail) {
-
-        Notifiable notifiable = new Notifiable();
+              Notifiable notifiable = new Notifiable();
         notifiable.setWorkflowTask(workflowTask);
         notifiable.setEmail(userEmail);
         notifiableRepository.save(notifiable);
 
     }
 
-    public void notifyStatusChange(Long workflowId, String authorization) {
+    public WorkflowTaskResponse notifyStatusChange(Long workflowId, String authorization) {
         WorkflowTask workflowTask = workflowTaskRepository.findById(workflowId).orElseThrow();
         String email = jwtUtil.getEmailFromToken(authorization);
         notifyMe(workflowTask, email);
+        return convertFromEntity(workflowTask);
     }
 }

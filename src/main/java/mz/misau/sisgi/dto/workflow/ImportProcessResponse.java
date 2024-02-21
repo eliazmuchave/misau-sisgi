@@ -10,6 +10,7 @@ import mz.misau.sisgi.entity.workflow.ForwardingAgent;
 import mz.misau.sisgi.entity.workflow.Goods;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ImportProcessResponse {
@@ -33,4 +34,5 @@ public class ImportProcessResponse {
     private Goods goods;
     private Beneficiary beneficiary;
     private Financier financier;
+    private List<NotifiableResponse> notifiables;
 }

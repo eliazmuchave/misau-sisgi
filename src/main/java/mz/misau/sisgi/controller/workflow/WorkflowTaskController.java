@@ -59,9 +59,9 @@ public class WorkflowTaskController {
     @PatchMapping("/{id}/notify")
     public ResponseEntity notifyMeStatusChange(@PathVariable Long id, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        System.out.println(token);
-         workflowTaskService.notifyStatusChange(id,token);
-        return  ResponseEntity.status(HttpStatus.OK).build();
+
+       WorkflowTaskResponse response =  workflowTaskService.notifyStatusChange(id,token);
+        return  ResponseEntity.status(HttpStatus.OK).body(response);
 
 
     }

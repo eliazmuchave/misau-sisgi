@@ -1,8 +1,13 @@
-import {Button, Col, FormFeedback, FormGroup, Input, Row} from "reactstrap";
+import {Alert, Button, Col, FormFeedback, FormGroup, Input, Row} from "reactstrap";
 import {Form} from "react-router-dom";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
+import AlertPopup from "./AlertPopup";
+import {useState} from "react";
+import ConfirmationPopup from "./ConfirmationPopup";
 
-export default function UpdateProcessDate({task}) {
+export default function UpdateProcessDate({task, updateTask}) {
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -21,6 +26,15 @@ export default function UpdateProcessDate({task}) {
                     "Authorization": `Bearer ${token}`, "Content-Type": "application/json"
                 }
             });
+
+
+            if (response.ok) {
+
+                let taskResponse = await response.json();
+                updateTask(taskResponse);
+
+
+            }
 
         }
 
@@ -62,14 +76,16 @@ export default function UpdateProcessDate({task}) {
                         </FormGroup></Col>
                         : ""}
 
-                    {(!task.arrivalDate || !task.pickupDate)?
-                    <Col>
-                        <div className="mt-3">
-                            <Button className="btn btn-primary " color="default">
-                                Actualizar
-                            </Button>
-                        </div>
-                    </Col> : ""}
+                    {(!task.arrivalDate || !task.pickupDate) ?
+                        <Col>
+
+
+                            <div className="mt-3">
+                                <Button className="btn btn-primary " color="default">
+                                    Actualizar
+                                </Button>
+                            </div>
+                        </Col> : ""}
                 </Row>
 
             </Form>

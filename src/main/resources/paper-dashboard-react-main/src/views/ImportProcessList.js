@@ -1,56 +1,83 @@
-import {getAuthorizationToken} from "../util/AccessTokenUtil";
+import {getAuthenticatedUserName, getAuthorizationToken} from "../util/AccessTokenUtil";
 import {json, Link, useLoaderData} from "react-router-dom";
 import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import {format} from "date-fns";
 import {useState} from "react";
 import TaskNav from "../layouts/TaskNav";
 import ProcessDetails from "../components/ProcessDetails";
+import AlertPopup from "../components/AlertPopup";
+import NotificationButton from "../components/NotificationButton";
 
 export default function ImportProcessList() {
     let tasks = useLoaderData();
-    if(tasks == null){
+    if (tasks == null) {
         tasks = [];
     }
     const [taskData, setTaskData] = useState(tasks);
-   async function  handleStatusForward(taskId){
 
-       const token = getAuthorizationToken();
-       const response = await fetch(`/api/tasks/${taskId}/forwardStatus`, {
-           method: "PATCH",
-           headers: {
-               "Authorization": `Bearer ${token}`,
-           }
-       });
 
-       if (!response.ok){
-           throw json({message: "Não foi possível actualizar"}, {status: 500})
-       }
 
-       const updatedTask = await response.json();
-       const updatedData = [...taskData];
-       const index = updatedData.findIndex((row) => row.id === taskId);
-       updatedData[index] = updatedTask;
-       setTaskData(updatedData);
+    async function handleStatusForward(taskId) {
 
-   }
+        const token = getAuthorizationToken();
+        const response = await fetch(`/api/importProcess/${taskId}/forwardStatus`, {
+            method: "PATCH",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
 
-   function handleDetails(taskId){
+        if (!response.ok) {
+            throw json({message: "Não foi possível actualizar"}, {status: 500})
+        }
 
-       <ProcessDetails></ProcessDetails>
+        const updatedTask = await response.json();
 
-   }
+        updateTaskOnList(updatedTask);
 
-  async function handleNotificationSubscribe(taskId){
+    }
 
-       const token = getAuthorizationToken();
-       const response = await fetch(`/api/tasks/${taskId}/notify`, {
-           method: "PATCH",
-           headers: {
-               "Authorization": `Bearer ${token}`,
-           }
-       });
+    const updateTaskOnList = (updatedTask) => {
+        const updatedData = [...taskData];
+        const index = updatedData.findIndex((row) => row.id === updatedTask.id);
+        updatedData[index] = updatedTask;
+        setTaskData(updatedData);
+    }
 
-   }
+
+    async function handleNotificationSubscribe(taskId) {
+
+        const token = getAuthorizationToken();
+        const response = await fetch(`/api/importProcess/${taskId}/notify`, {
+            method: "PATCH",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        if (response.ok){
+            const updatedTask = await response.json();
+            console.log(updatedTask)
+           updateTaskOnList(updatedTask);
+
+
+        }
+
+    }
+
+    function hasSubscribedNotification(task) {
+
+        const username = getAuthenticatedUserName();
+
+        if (task.notifiables) {
+            const foundTask = task.notifiables.some(notifiable => notifiable.email == username);
+            if (foundTask) {
+                return true;
+            }
+            return false;
+        }
+
+    }
 
     return (<>
         <div className="content">
@@ -74,8 +101,8 @@ export default function ImportProcessList() {
                                 <thead className="text-primary">
                                 <tr>
                                     <th>Designação</th>
-                                    <th>Estado</th>
-                                    <th></th>
+                                    <th>Estado Actual</th>
+                                    <th>Avançar Estado</th>
                                     <th>Noficação</th>
                                     <th>Data Início</th>
                                     <th>Previsão Término</th>
@@ -86,25 +113,31 @@ export default function ImportProcessList() {
                                 </thead>
                                 <tbody>
                                 {taskData.map(task => (<tr key={task.id}>
-                                    <td>{task?.taskName}</td>
-                                    <td><span>
+                                    <td><i className="fa fa-circle mr-2"></i> {task?.taskName}</td>
+                                    <td><i className="fa fa-clock mr-2"></i>
                                         {task?.currentStatus}
-                                        {task.predictedStatusFlow ? <button onClick={() => handleStatusForward(task?.id)}
-                                                                 className="btn-default btn btn-sm  ml-3"><i
-                                            className=" fa fa-solid fa-forward"></i></button>:""}
 
-                                    </span></td>
+
+                                    </td>
                                     <td>
-                                        <button onClick={() => handleNotificationSubscribe(task?.id)} className="btn btn-sm btn-default"><i className="fa fa-envelope" aria-hidden="true"></i></button>
+                                        {task.predictedStatusFlow ?
+                                            <button onClick={() => handleStatusForward(task?.id)}
+                                                    className="btn-default btn btn-sm  ml-3"><i
+                                                className=" fa fa-solid fa-arrow-right"></i></button> : ""}
+                                    </td>
+                                    <td>
+                                        <NotificationButton task={task}></NotificationButton>
                                     </td>
                                     <td>{format(new Date(task.startDate), 'dd/MM/yyyy')}</td>
                                     <td>{format(new Date(task.expectedEndDate), 'dd/MM/yyyy')}</td>
-                                    <td>{task.predictedStatusFlow? task.predictedStatusFlow?.name:
-                                        <Link to={`${task.id}/edit`} className="btn btn-sm btn-outline-secondary ml-3"><i
+                                    <td><i
+                                        className="fa fa-sitemap"></i> {task.predictedStatusFlow ? task.predictedStatusFlow?.name :
+                                        <Link to={`${task.id}/edit`}
+                                              className="btn btn-sm btn-outline-secondary ml-3"><i
                                             className=" fa fa-solid fa-plus"></i></Link>}</td>
 
                                     <td>
-                                        <ProcessDetails task={task}></ProcessDetails>
+                                        <ProcessDetails processTask={task} onUpdate={updateTaskOnList}></ProcessDetails>
                                     </td>
 
 

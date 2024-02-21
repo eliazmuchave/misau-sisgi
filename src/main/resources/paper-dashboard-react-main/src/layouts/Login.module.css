@@ -6,7 +6,8 @@
     justify-content: center;
     margin-top: 10%;
     padding: 0;
-  
-
+    }
+.loginBox {
+    background-color:#edf0f2;
+    padding: 25px 30px;
 }
-

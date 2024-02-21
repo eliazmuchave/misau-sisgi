@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "workflow_task")
 @Data
 @ToString(exclude="predictedStatusFlow")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class WorkflowTask extends BaseEntity {
 
     @Column(name = "name", nullable = false)
@@ -31,7 +31,7 @@ public class WorkflowTask extends BaseEntity {
     @JoinColumn(name = "status_flow_id", nullable = true)
     private PredictedStatusFlow predictedStatusFlow;
 
-    @OneToMany(mappedBy = "workflowTask")
+    @OneToMany(mappedBy = "workflowTask", fetch = FetchType.EAGER)
     private List<Notifiable> notifiables;
 
 

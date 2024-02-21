@@ -3,10 +3,6 @@ import {
     Badge,
     Button,
     Col,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Label,
     Modal,
     ModalBody,
     ModalFooter,
@@ -17,14 +13,31 @@ import modalCss from './ProcessDetails.module.css'
 import {format} from "date-fns";
 import {Form} from "react-router-dom";
 import UpdateProcessDate from "./UpdateProcessDate";
+import ConfirmationPopup from "./ConfirmationPopup";
+import AlertPopup from "./AlertPopup";
 
-export default function ProcessDetails({task}) {
+export default function ProcessDetails({processTask, onUpdate}) {
 
     const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
+
+    const [isOpenSuccess, setIsOpenSuccess] = useState(false);
+    const toggleSuccess = () => setIsOpenSuccess(!isOpenSuccess);
+
+    const [task, setTask] = useState(processTask);
+    function handleUpdate(task){
+
+
+        setTask(task);
+        onUpdate(task);
+        toggleSuccess();
+
+    }
+
 
     const data = {};
 
-    const toggle = () => setModal(!modal);
+
 
     return (
         <div>
@@ -88,7 +101,9 @@ export default function ProcessDetails({task}) {
                     </Row>
                 </ModalBody>
                 <ModalBody>
-                <UpdateProcessDate task={task}></UpdateProcessDate>
+                <UpdateProcessDate task={task} updateTask={handleUpdate}></UpdateProcessDate>
+                    <AlertPopup isOpen={isOpenSuccess} toggle={toggleSuccess} message="Processo actualizado com sucesso!"
+                    ></AlertPopup>
 
                 </ModalBody>
 
@@ -100,7 +115,7 @@ export default function ProcessDetails({task}) {
                     <Button className="btn btn-sm" color="default" onClick={toggle}>
                         Notificação
                     </Button>
-                    <Button className="btn btn-sm" color="danger" onClick={toggle}>
+                    <Button className="btn btn-sm" color="danger" >
                         Sair
                     </Button>
                 </ModalFooter>

@@ -82,7 +82,6 @@ public class JwtUtil {
 
     public String getEmailFromToken(String authorization){
         String token = authorization.substring(authorization.indexOf(" "));
-        System.out.println(token);
         Claims claims = parseJwtClaims(token);
        return getEmail(claims);
     }

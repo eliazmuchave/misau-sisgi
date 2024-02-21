@@ -1,8 +1,10 @@
 package mz.misau.sisgi.controller.workflow;
 
+import jakarta.servlet.http.HttpServletRequest;
 import mz.misau.sisgi.dto.workflow.ArrivalAndPickupDateRequest;
 import mz.misau.sisgi.dto.workflow.ImportProcessRequest;
 import mz.misau.sisgi.dto.workflow.ImportProcessResponse;
+import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
 import mz.misau.sisgi.service.workflow.ImportProcessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,5 +72,23 @@ public class ImportProcessController {
       }catch (Exception e){
           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
       }
+    }
+
+    @PatchMapping("/{id}/notify")
+    public ResponseEntity notifyMeStatusChange(@PathVariable Long id, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+
+        ImportProcessResponse response =  importProcessService.subscribeStatusChange(id,token);
+        return  ResponseEntity.status(HttpStatus.OK).body(response);
+
+
+    }
+
+    @PatchMapping("/{id}/forwardStatus")
+    public ResponseEntity<ImportProcessResponse> forwardStatus(@PathVariable Long id){
+        ImportProcessResponse importResponse =importProcessService.forwardImportStatus(id);
+        return  ResponseEntity.status(HttpStatus.OK).body(importResponse);
+
+
     }
 }

@@ -3,15 +3,13 @@ package mz.misau.sisgi.service.workflow;
 import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.comunication.NotificationRepository;
-import mz.misau.sisgi.dto.workflow.ArrivalAndPickupDateRequest;
-import mz.misau.sisgi.dto.workflow.ImportProcessRequest;
-import mz.misau.sisgi.dto.workflow.ImportProcessResponse;
-import mz.misau.sisgi.dto.workflow.PredictedStatusFlowResponse;
+import mz.misau.sisgi.dto.workflow.*;
 import mz.misau.sisgi.entity.workflow.*;
 import mz.misau.sisgi.repository.workflow.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,9 +34,23 @@ public class ImportProcessService extends WorkflowTaskService {
         this.goodsRepository = goodsRepository;
     }
 
-    public ImportProcessResponse add(ImportProcessRequest importProcessRequest){
-       return add(importProcessRequest, new ImportProcess());
+    private static void setNotifiableResponse(ImportProcess importProcess, ImportProcessResponse importProcessResponse) {
+        List<NotifiableResponse> notifiableResponses = new ArrayList<>();
+
+        if (importProcess.getNotifiables() == null)
+            return;
+        importProcess.getNotifiables().stream().forEach(notifiable -> {
+            NotifiableResponse notifiableResponse = new NotifiableResponse();
+            BeanUtils.copyProperties(notifiable, notifiableResponse);
+            notifiableResponses.add(notifiableResponse);
+        });
+        importProcessResponse.setNotifiables(notifiableResponses);
     }
+
+    public ImportProcessResponse add(ImportProcessRequest importProcessRequest) {
+        return add(importProcessRequest, new ImportProcess());
+    }
+
     public ImportProcessResponse add(ImportProcessRequest importProcessRequest, ImportProcess importProcess) {
 
         BeanUtils.copyProperties(importProcessRequest, importProcess);
@@ -67,7 +79,6 @@ public class ImportProcessService extends WorkflowTaskService {
 
         if (importProcessRequest.getStatusFlowId() != null) {
             PredictedStatusFlow flow = predictedStatusFlowRepository.findById(importProcessRequest.getStatusFlowId()).get();
-            System.out.println(flow);
             importProcess.setPredictedStatusFlow(flow);
         }
         importProcessRepository.save(importProcess);
@@ -77,9 +88,13 @@ public class ImportProcessService extends WorkflowTaskService {
     private ImportProcessResponse convertToResponse(ImportProcess importProcess) {
         ImportProcessResponse importProcessResponse = new ImportProcessResponse();
         BeanUtils.copyProperties(importProcess, importProcessResponse);
+
         PredictedStatusFlowResponse predictedStatusFlowResponse = new PredictedStatusFlowResponse();
         BeanUtils.copyProperties(importProcess.getPredictedStatusFlow(), predictedStatusFlowResponse);
         importProcessResponse.setPredictedStatusFlow(predictedStatusFlowResponse);
+
+        setNotifiableResponse(importProcess, importProcessResponse);
+
         String currentStatus = getCurrentStatusName(importProcess);
         importProcessResponse.setCurrentStatus(currentStatus);
         return importProcessResponse;
@@ -97,33 +112,33 @@ public class ImportProcessService extends WorkflowTaskService {
 
     public ImportProcessResponse getProcessById(Long id) {
         ImportProcess importProcess = importProcessRepository.findById(id).get();
-         return convertToResponse(importProcess);
+        return convertToResponse(importProcess);
 
     }
 
     public ImportProcessResponse update(ImportProcessRequest importProcessRequest, Long id) {
 
         ImportProcess importProcess = importProcessRepository.findById(id).get();
-         return  add(importProcessRequest, importProcess);
+        return add(importProcessRequest, importProcess);
 
     }
 
     public ImportProcessResponse updateArrivalAndPickupDate(ArrivalAndPickupDateRequest arrivalAndPickupDateRequest) {
         Long id = arrivalAndPickupDateRequest.getId();
         ImportProcess process = null;
-        if(id != null){
+        if (id != null) {
             try {
                 process = importProcessRepository.findById(id).get();
-                if (arrivalAndPickupDateRequest.getArrivalDate() != null){
+                if (arrivalAndPickupDateRequest.getArrivalDate() != null) {
                     process.setArrivalDate(arrivalAndPickupDateRequest.getArrivalDate());
                 }
 
-                if (arrivalAndPickupDateRequest.getPickupDate() != null){
+                if (arrivalAndPickupDateRequest.getPickupDate() != null) {
                     process.setPickupDate(arrivalAndPickupDateRequest.getPickupDate());
                 }
 
 
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
 
             }
 
@@ -132,5 +147,19 @@ public class ImportProcessService extends WorkflowTaskService {
         importProcessRepository.save(process);
 
         return convertToResponse(process);
+    }
+
+    public ImportProcessResponse subscribeStatusChange(Long id, String token) {
+        notifyStatusChange(id, token);
+        ImportProcess importProcess = importProcessRepository.findById(id).orElseThrow();
+        return convertToResponse(importProcess);
+    }
+
+    public ImportProcessResponse forwardImportStatus(Long id) {
+        forwardStatus(id);
+        ImportProcess importProcess = importProcessRepository.findById(id).orElseThrow();
+        return convertToResponse(importProcess);
+
+
     }
 }

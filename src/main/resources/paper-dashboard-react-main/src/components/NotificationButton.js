@@ -19,8 +19,7 @@ export default function NotificationButton({task}) {
 
         const token = getAuthorizationToken();
         const response = await fetch(`/api/importProcess/${taskId}/notify`, {
-            method: "PATCH",
-            headers: {
+            method: "PATCH", headers: {
                 "Authorization": `Bearer ${token}`,
             }
         });
@@ -48,18 +47,16 @@ export default function NotificationButton({task}) {
 
     }
 
-    return visible ? (
-        <>
+    return visible ? (<>
 
-            <button onClick={() => handleNotificationSubscribe(task?.id)}
-                    className="btn btn-sm btn-default"><i className="fa fa-envelope"
-                                                          aria-hidden="true"></i>
-            </button>
+        <button onClick={() => handleNotificationSubscribe(task?.id)}
+                className="btn btn-sm btn-default"><i className="fa fa-envelope"
+                                                      aria-hidden="true"></i>
+        </button>
 
-            <AlertPopup
-                message="Sua conta foi subscrita com sucesso! Irá receber Email informando lhe a mudança do estado deste processo. "
-                toggle={toggleSubscription} isOpen={isOpenSubscription} onConfirm={handleConfirm}></AlertPopup>
+        <AlertPopup
+            message="Sua inscrição foi concluída com sucesso! Você receberá um e-mail informando sobre as alterações no estado deste processo. "
+            toggle={toggleSubscription} isOpen={isOpenSubscription} onConfirm={handleConfirm}></AlertPopup>
 
-        </>
-    ) : null;
+    </>) : null;
 }

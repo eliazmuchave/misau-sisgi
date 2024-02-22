@@ -7,6 +7,7 @@ import TaskNav from "../layouts/TaskNav";
 import ProcessDetails from "../components/ProcessDetails";
 import AlertPopup from "../components/AlertPopup";
 import NotificationButton from "../components/NotificationButton";
+import ForwardingStatus from "../components/ForwardingStatus";
 
 export default function ImportProcessList() {
     let tasks = useLoaderData();
@@ -15,28 +16,6 @@ export default function ImportProcessList() {
     }
     const [taskData, setTaskData] = useState(tasks);
 
-
-
-    async function handleStatusForward(taskId) {
-
-        const token = getAuthorizationToken();
-        const response = await fetch(`/api/importProcess/${taskId}/forwardStatus`, {
-            method: "PATCH",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-
-        if (!response.ok) {
-            throw json({message: "Não foi possível actualizar"}, {status: 500})
-        }
-
-        const updatedTask = await response.json();
-
-        updateTaskOnList(updatedTask);
-
-    }
-
     const updateTaskOnList = (updatedTask) => {
         const updatedData = [...taskData];
         const index = updatedData.findIndex((row) => row.id === updatedTask.id);
@@ -44,40 +23,6 @@ export default function ImportProcessList() {
         setTaskData(updatedData);
     }
 
-
-    async function handleNotificationSubscribe(taskId) {
-
-        const token = getAuthorizationToken();
-        const response = await fetch(`/api/importProcess/${taskId}/notify`, {
-            method: "PATCH",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-
-        if (response.ok){
-            const updatedTask = await response.json();
-            console.log(updatedTask)
-           updateTaskOnList(updatedTask);
-
-
-        }
-
-    }
-
-    function hasSubscribedNotification(task) {
-
-        const username = getAuthenticatedUserName();
-
-        if (task.notifiables) {
-            const foundTask = task.notifiables.some(notifiable => notifiable.email == username);
-            if (foundTask) {
-                return true;
-            }
-            return false;
-        }
-
-    }
 
     return (<>
         <div className="content">
@@ -120,10 +65,7 @@ export default function ImportProcessList() {
 
                                     </td>
                                     <td>
-                                        {task.predictedStatusFlow ?
-                                            <button onClick={() => handleStatusForward(task?.id)}
-                                                    className="btn-default btn btn-sm  ml-3"><i
-                                                className=" fa fa-solid fa-arrow-right"></i></button> : ""}
+                                        <ForwardingStatus task={task} onUpdate={updateTaskOnList}></ForwardingStatus>
                                     </td>
                                     <td>
                                         <NotificationButton task={task}></NotificationButton>

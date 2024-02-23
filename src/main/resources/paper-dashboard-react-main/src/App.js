@@ -46,9 +46,12 @@ const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: <Admin></Admin>,
+        element: <Admin>
+
+        </Admin>,
         errorElement:<ErrorPage></ErrorPage>,
         children: [
+            {index: true, element: <Dashboard></Dashboard>},
 
             {path: "dashboard", element: <Dashboard></Dashboard>},
             {path: "icons", element: <Icons></Icons>},

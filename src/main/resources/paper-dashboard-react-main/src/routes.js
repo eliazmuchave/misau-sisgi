@@ -28,7 +28,7 @@ import UpgradeToPro from "views/Upgrade.js";
 var routes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Painel",
     icon: "nc-icon nc-bank",
     component: <Dashboard />,
     layout: "/admin",

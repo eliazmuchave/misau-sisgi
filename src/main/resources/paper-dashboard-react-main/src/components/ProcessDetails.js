@@ -11,32 +11,29 @@ import {
 } from "reactstrap";
 import modalCss from './ProcessDetails.module.css'
 import {format} from "date-fns";
-import {Form} from "react-router-dom";
 import UpdateProcessDate from "./UpdateProcessDate";
-import ConfirmationPopup from "./ConfirmationPopup";
-import AlertPopup from "./AlertPopup";
+import NotificationButton from "./NotificationButton";
+import ForwardingStatus from "./ForwardingStatus";
 
 export default function ProcessDetails({processTask, onUpdate}) {
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-    const [isOpenSuccess, setIsOpenSuccess] = useState(false);
-    const toggleSuccess = () => setIsOpenSuccess(!isOpenSuccess);
-
+ 
     const [task, setTask] = useState(processTask);
-    function handleUpdate(task){
+
+    function handleUpdate(task) {
 
 
         setTask(task);
         onUpdate(task);
-        toggleSuccess();
+
 
     }
 
 
     const data = {};
-
 
 
     return (
@@ -73,12 +70,16 @@ export default function ProcessDetails({processTask, onUpdate}) {
                     <Row className="mt-2">
                         <Col> <strong>Previsão de
                             Chegada: </strong> {format(new Date(task.arrivalForecast), 'dd/MM/yyyy')}</Col>
-                        {task.arrivalDate?<Col><strong>Chegada: </strong>{format(new Date(task.arrivalDate), 'dd/MM/yyyy')} </Col>: "" }
+                        {task.arrivalDate ?
+                            <Col><strong>Chegada: </strong>{format(new Date(task.arrivalDate), 'dd/MM/yyyy')}
+                            </Col> : ""}
 
                     </Row>
 
                     <Row className="mt-2">
-                        {task.pickupDate?  <Col> <strong>Data Levantamento: </strong> {format(new Date(task.pickupDate), 'dd/MM/yyyy')}  </Col>: "" }
+                        {task.pickupDate ?
+                            <Col> <strong>Data Levantamento: </strong> {format(new Date(task.pickupDate), 'dd/MM/yyyy')}
+                            </Col> : ""}
 
                         <Col><strong>Estado Actual: </strong><Badge className=""> {task.currentStatus} </Badge> </Col>
 
@@ -101,23 +102,16 @@ export default function ProcessDetails({processTask, onUpdate}) {
                     </Row>
                 </ModalBody>
                 <ModalBody>
-                <UpdateProcessDate task={task} updateTask={handleUpdate}></UpdateProcessDate>
-                    <AlertPopup isOpen={isOpenSuccess} toggle={toggleSuccess} message="Processo actualizado com sucesso!"
-                    ></AlertPopup>
+                    <UpdateProcessDate task={task} updateTask={handleUpdate}></UpdateProcessDate>
+
 
                 </ModalBody>
 
 
                 <ModalFooter>
-                    <Button className="btn btn-sm" color="default" onClick={toggle}>
-                        Estado
-                    </Button>
-                    <Button className="btn btn-sm" color="default" onClick={toggle}>
-                        Notificação
-                    </Button>
-                    <Button className="btn btn-sm" color="danger" >
-                        Sair
-                    </Button>
+                    <NotificationButton task={task}></NotificationButton>
+                    <ForwardingStatus task={task} onUpdate={handleUpdate}></ForwardingStatus>
+
                 </ModalFooter>
             </Modal>
         </div>

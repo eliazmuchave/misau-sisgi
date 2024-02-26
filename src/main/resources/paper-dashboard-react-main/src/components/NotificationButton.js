@@ -50,7 +50,7 @@ export default function NotificationButton({task}) {
     return visible ? (<>
 
         <button onClick={() => handleNotificationSubscribe(task?.id)}
-                className="btn btn-sm btn-default"><i className="fa fa-envelope"
+                className="btn btn-sm btn-default ml-3"><i className="fa fa-envelope"
                                                       aria-hidden="true"></i>
         </button>
 

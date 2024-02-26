@@ -15,6 +15,7 @@ import UpdateProcessDate from "./UpdateProcessDate";
 import NotificationButton from "./NotificationButton";
 import ForwardingStatus from "./ForwardingStatus";
 import WorkflowStatusBadge from "./WorkflowStatusBadge";
+import CloseImportButton from "./CloseImportButton";
 
 export default function ProcessDetails({processTask, onUpdate}) {
 
@@ -114,6 +115,7 @@ export default function ProcessDetails({processTask, onUpdate}) {
 
 
                 <ModalFooter>
+                    <CloseImportButton task={task} onUpdate={handleUpdate} ></CloseImportButton>
                     <NotificationButton task={task}></NotificationButton>
                     <ForwardingStatus task={task} onUpdate={handleUpdate}></ForwardingStatus>
 

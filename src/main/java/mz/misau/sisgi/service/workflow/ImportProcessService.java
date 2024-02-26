@@ -162,4 +162,15 @@ public class ImportProcessService extends WorkflowTaskService {
 
 
     }
+
+
+    public ImportProcessResponse closeProcess(Long id) {
+
+        ImportProcess importProcess = importProcessRepository.findById(id).orElseThrow();
+        importProcess.setClosed(true);
+        importProcessRepository.save(importProcess);
+        return convertToResponse(importProcess);
+
+
+    }
 }

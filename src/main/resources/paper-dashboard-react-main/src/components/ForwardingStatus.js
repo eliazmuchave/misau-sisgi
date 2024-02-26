@@ -41,7 +41,7 @@ export default function ForwardingStatus({task, onUpdate}){
         <>
 
                 <button onClick={() => handleStatusForward(task)}
-                        className="btn-default btn btn-sm  ml-3"><i
+                        className="btn-default btn btn-sm ml-3"><i
                     className=" fa fa-solid fa-arrow-right"></i></button>
             <AlertPopup
                 message="Estado do processo alterado com sucesso! "

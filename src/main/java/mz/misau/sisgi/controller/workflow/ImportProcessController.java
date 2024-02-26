@@ -92,4 +92,12 @@ public class ImportProcessController {
 
 
     }
+
+    @PatchMapping("/{id}/close")
+    public ResponseEntity<ImportProcessResponse> cancelImport(@PathVariable Long id){
+        ImportProcessResponse importResponse =importProcessService.closeProcess(id);
+        return  ResponseEntity.status(HttpStatus.OK).body(importResponse);
+
+
+    }
 }

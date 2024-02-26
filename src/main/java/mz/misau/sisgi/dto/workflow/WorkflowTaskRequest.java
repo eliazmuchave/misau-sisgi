@@ -11,4 +11,6 @@ public class WorkflowTaskRequest {
     private Date startDate;
     private Date expectedEndDate;
     private Long statusFlow;
+    private boolean closed;
+    private boolean done;
 }

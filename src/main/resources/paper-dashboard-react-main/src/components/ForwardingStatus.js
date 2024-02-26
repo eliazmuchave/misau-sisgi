@@ -30,9 +30,14 @@ export default function ForwardingStatus({task, onUpdate}){
 
     }
 
+    const visible = () => { return (task.predictedStatusFlow && !task.done && !task.closed); };
 
 
-    return task.predictedStatusFlow ?(
+
+
+
+
+    return visible()?(
         <>
 
                 <button onClick={() => handleStatusForward(task)}

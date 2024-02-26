@@ -35,7 +35,7 @@ var routes = [
   },
 
   {
-    path: "/tasks",
+    path: "/importProcess",
     name: "Tarefas",
     icon: "fa fa-tasks",
     component: <Notifications />,

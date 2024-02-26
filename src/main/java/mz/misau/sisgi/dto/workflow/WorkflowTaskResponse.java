@@ -13,5 +13,7 @@ public class WorkflowTaskResponse {
     private Date created;
     private Date updated;
     private String currentStatus;
+    private boolean closed;
+    private boolean done;
     private PredictedStatusFlowResponse workflow;
 }

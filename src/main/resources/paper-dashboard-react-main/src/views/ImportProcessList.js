@@ -1,6 +1,6 @@
 import {getAuthenticatedUserName, getAuthorizationToken} from "../util/AccessTokenUtil";
 import {json, Link, useLoaderData} from "react-router-dom";
-import {Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
+import {Badge, Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import {format} from "date-fns";
 import {useState} from "react";
 import TaskNav from "../layouts/TaskNav";
@@ -8,6 +8,7 @@ import ProcessDetails from "../components/ProcessDetails";
 import AlertPopup from "../components/AlertPopup";
 import NotificationButton from "../components/NotificationButton";
 import ForwardingStatus from "../components/ForwardingStatus";
+import WorkflowStatusBadge from "../components/WorkflowStatusBadge";
 
 export default function ImportProcessList() {
     let tasks = useLoaderData();
@@ -26,7 +27,9 @@ export default function ImportProcessList() {
 
     return (<>
         <div className="content">
-            <Row>
+
+
+        <Row>
                 <Col md="12">
                     <Card>
                         <TaskNav></TaskNav>
@@ -60,7 +63,7 @@ export default function ImportProcessList() {
                                 {taskData.map(task => (<tr key={task.id}>
                                     <td><i className="fa fa-circle mr-2"></i> {task?.taskName}</td>
                                     <td><i className="fa fa-clock mr-2"></i>
-                                        {task?.currentStatus}
+                                        <WorkflowStatusBadge task={task}></WorkflowStatusBadge>
 
 
                                     </td>

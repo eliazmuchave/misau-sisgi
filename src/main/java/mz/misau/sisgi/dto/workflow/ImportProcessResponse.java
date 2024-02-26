@@ -29,6 +29,8 @@ public class ImportProcessResponse {
     private Date arrivalForecast;
     private Date arrivalDate;
     private Date pickupDate;
+    private boolean closed;
+    private boolean done;
     private PredictedStatusFlowResponse predictedStatusFlow;
     private ForwardingAgent forwardingAgent;
     private Goods goods;

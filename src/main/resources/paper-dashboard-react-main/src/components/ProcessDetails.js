@@ -14,13 +14,14 @@ import {format} from "date-fns";
 import UpdateProcessDate from "./UpdateProcessDate";
 import NotificationButton from "./NotificationButton";
 import ForwardingStatus from "./ForwardingStatus";
+import WorkflowStatusBadge from "./WorkflowStatusBadge";
 
 export default function ProcessDetails({processTask, onUpdate}) {
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
- 
+
     const [task, setTask] = useState(processTask);
 
     function handleUpdate(task) {
@@ -37,13 +38,21 @@ export default function ProcessDetails({processTask, onUpdate}) {
 
 
     return (
-        <div>
+        <>
             <Button className="btn-default btn btn-sm  ml-3" onClick={toggle}>
                 <i
                     className=" fa fa-info fa-solid"></i>
             </Button>
             <Modal className={modalCss.detailsModal} isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>{task.taskName}</ModalHeader>
+                <ModalHeader toggle={toggle}>
+
+
+                    <span className="mr-3"> {task.taskName}</span>
+
+
+                    <WorkflowStatusBadge task={task}></WorkflowStatusBadge>
+
+                </ModalHeader>
                 <ModalBody>
                     <Row className="mt-1">
 
@@ -81,13 +90,11 @@ export default function ProcessDetails({processTask, onUpdate}) {
                             <Col> <strong>Data Levantamento: </strong> {format(new Date(task.pickupDate), 'dd/MM/yyyy')}
                             </Col> : ""}
 
-                        <Col><strong>Estado Actual: </strong><Badge className=""> {task.currentStatus} </Badge> </Col>
-
+                        <Col> Estado actual: <WorkflowStatusBadge task={task}></WorkflowStatusBadge></Col>
                     </Row>
 
                     <Row className="mt-2">
                         <Col> <strong>Despachante: </strong> {task?.forwardingAgent?.name}</Col>
-                        <Col><strong>Estado Actual: </strong>{task.currentStatus} </Col>
 
                     </Row>
 
@@ -114,6 +121,6 @@ export default function ProcessDetails({processTask, onUpdate}) {
 
                 </ModalFooter>
             </Modal>
-        </div>
+        </>
     );
 }

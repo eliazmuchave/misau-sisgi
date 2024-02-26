@@ -27,6 +27,12 @@ public class WorkflowTask extends BaseEntity {
     @Column(name = "current_status")
     private int currentStatus;
 
+    @Column(name = "done")
+    private boolean done;
+
+    @Column(name = "closed")
+    private boolean closed;
+
     @ManyToOne
     @JoinColumn(name = "status_flow_id", nullable = true)
     private PredictedStatusFlow predictedStatusFlow;

@@ -21,6 +21,9 @@ public class ImportProcessRequest {
 
     private int quantity;
 
+    private boolean done;
+    private boolean closed;
+
     private Date arrivalForecast;
 
     private Date arrivalDate;

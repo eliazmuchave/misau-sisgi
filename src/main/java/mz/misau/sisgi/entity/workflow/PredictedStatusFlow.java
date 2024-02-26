@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "predicted_state_flow")
 @Data
-@ToString(exclude={"statuses", "workflowTasks"})
+@ToString(exclude = {"statuses", "workflowTasks"})
 
 
 public class PredictedStatusFlow extends BaseEntity {
@@ -26,6 +26,10 @@ public class PredictedStatusFlow extends BaseEntity {
     @JoinTable(name = "status_workflow_join", joinColumns = {@JoinColumn(name = "predicted_state_flow_id")}, inverseJoinColumns = {@JoinColumn(name = "status_id")})
     private List<Status> statuses;
 
+    public int getTotalStatuses() {
+
+        return statuses.size();
+    }
 
 
 }

@@ -46,9 +46,7 @@ export default function ProcessDetails({processTask, onUpdate}) {
             <Modal className={modalCss.detailsModal} isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>
 
-
                     <span className="mr-3"> {task.taskName}</span>
-
 
                     <WorkflowStatusBadge task={task}></WorkflowStatusBadge>
 

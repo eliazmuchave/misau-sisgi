@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "workflow_task")
 @Data
-@ToString(exclude="predictedStatusFlow")
+@ToString(exclude = "predictedStatusFlow")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class WorkflowTask extends BaseEntity {
 
@@ -42,7 +42,16 @@ public class WorkflowTask extends BaseEntity {
 
 
     public void forwardStatus() {
-        currentStatus += 1;
+
+        if (currentStatus <= predictedStatusFlow.getTotalStatuses()) {
+            currentStatus += 1;
+
+        }
+
+        if (currentStatus == predictedStatusFlow.getTotalStatuses()) {
+            done = true;
+        }
+
 
     }
 }

@@ -24,13 +24,9 @@ export default function ProcessDetails({processTask, onUpdate}) {
 
     const [task, setTask] = useState(processTask);
 
-    function handleUpdate(task) {
-
-
-        setTask(task);
-        onUpdate(task);
-
-
+    function handleUpdate(taskToUpdate) {
+        setTask(taskToUpdate);
+        onUpdate(taskToUpdate);
     }
 
 
@@ -114,8 +110,8 @@ export default function ProcessDetails({processTask, onUpdate}) {
 
 
                 <ModalFooter>
-                    <CloseImportButton task={task} onUpdate={handleUpdate} ></CloseImportButton>
-                    <NotificationButton task={task}></NotificationButton>
+                    <CloseImportButton task={task} onUpdate={handleUpdate}></CloseImportButton>
+                    <NotificationButton task={task} onUpdate={handleUpdate}></NotificationButton>
                     <ForwardingStatus task={task} onUpdate={handleUpdate}></ForwardingStatus>
 
                 </ModalFooter>

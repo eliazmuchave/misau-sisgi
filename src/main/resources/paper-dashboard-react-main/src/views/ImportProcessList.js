@@ -2,7 +2,7 @@ import {getAuthenticatedUserName, getAuthorizationToken} from "../util/AccessTok
 import {json, Link, useLoaderData} from "react-router-dom";
 import {Badge, Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table} from "reactstrap";
 import {format} from "date-fns";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TaskNav from "../layouts/TaskNav";
 import ProcessDetails from "../components/ProcessDetails";
 import AlertPopup from "../components/AlertPopup";
@@ -18,6 +18,7 @@ export default function ImportProcessList() {
     const [taskData, setTaskData] = useState(tasks);
 
     const updateTaskOnList = (updatedTask) => {
+
         const updatedData = [...taskData];
         const index = updatedData.findIndex((row) => row.id === updatedTask.id);
         updatedData[index] = updatedTask;
@@ -25,11 +26,13 @@ export default function ImportProcessList() {
     }
 
 
+
+
     return (<>
         <div className="content">
 
 
-        <Row>
+            <Row>
                 <Col md="12">
                     <Card>
                         <TaskNav></TaskNav>
@@ -71,7 +74,8 @@ export default function ImportProcessList() {
                                         <ForwardingStatus task={task} onUpdate={updateTaskOnList}></ForwardingStatus>
                                     </td>
                                     <td>
-                                        <NotificationButton task={task}></NotificationButton>
+                                        <NotificationButton task={task}
+                                                            onUpdate={updateTaskOnList}></NotificationButton>
                                     </td>
                                     <td>{format(new Date(task.startDate), 'dd/MM/yyyy')}</td>
                                     <td>{format(new Date(task.expectedEndDate), 'dd/MM/yyyy')}</td>

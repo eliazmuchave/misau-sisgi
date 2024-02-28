@@ -37,7 +37,7 @@ public class WorkflowTask extends BaseEntity {
     @JoinColumn(name = "status_flow_id", nullable = true)
     private PredictedStatusFlow predictedStatusFlow;
 
-    @OneToMany(mappedBy = "workflowTask", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workflowTask")
     private List<Notifiable> notifiables;
 
 

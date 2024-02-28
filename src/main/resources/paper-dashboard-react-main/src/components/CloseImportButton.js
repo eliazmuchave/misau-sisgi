@@ -3,11 +3,12 @@ import {getAuthenticatedUserName, getAuthorizationToken} from "../util/AccessTok
 import AlertPopup from "./AlertPopup";
 import ConfirmationPopup from "./ConfirmationPopup";
 
-export default function CloseImportButton({task, onUpdate}){
+export default function CloseImportButton({task, onUpdate}) {
 
     const [visible, setVisible] = useState(!task.closed);
     const [isConfirmation, setIsConfirmation] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+
     const toggleIsConfirmation = () => {
         setIsConfirmation(!isConfirmation);
 
@@ -17,8 +18,8 @@ export default function CloseImportButton({task, onUpdate}){
         setIsSuccess(!isSuccess);
     }
 
-   async function handleConfirm() {
-       await  handleClose(task.id);
+    async function handleConfirm() {
+        await handleClose(task.id);
 
     }
 
@@ -36,22 +37,27 @@ export default function CloseImportButton({task, onUpdate}){
             toggleIsConfirmation();
             toggleIsSuccess();
             const updatedTask = await response.json();
-            onUpdate(updatedTask);
+
+            setTimeout(() => {
+                onUpdate(updatedTask);
+                setVisible(false);
+            }, 4000)
+
 
         }
 
     }
 
 
-
     return visible ? (<>
 
         <button onClick={() => toggleIsConfirmation()}
                 className="btn btn-sm btn-danger ml-3"><i className="fa fa-times-circle"
-                                                      aria-hidden="true"></i>
+                                                          aria-hidden="true"></i>
         </button>
 
-        <ConfirmationPopup toggle={toggleIsConfirmation} isOpen={isConfirmation} onConfirm={handleConfirm}  >Deseja realmente encerrar este processo?</ConfirmationPopup>
+        <ConfirmationPopup toggle={toggleIsConfirmation} isOpen={isConfirmation} onConfirm={handleConfirm}>Deseja
+            realmente encerrar este processo?</ConfirmationPopup>
 
         <AlertPopup
             message="Processo encerrado com sucesso! "

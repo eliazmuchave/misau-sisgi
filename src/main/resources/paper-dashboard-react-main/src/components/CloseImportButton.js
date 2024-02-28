@@ -41,7 +41,7 @@ export default function CloseImportButton({task, onUpdate}) {
             setTimeout(() => {
                 onUpdate(updatedTask);
                 setVisible(false);
-            }, 4000)
+            }, 5000)
 
 
         }

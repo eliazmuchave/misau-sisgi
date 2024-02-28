@@ -30,7 +30,7 @@ export default function NotificationButton({task, onUpdate}) {
             toggleSubscription();
             setTimeout(() => {
                 onUpdate(updatedTask)
-            }, 4000)
+            }, 5000)
 
             ;
 

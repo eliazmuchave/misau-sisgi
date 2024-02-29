@@ -9,6 +9,7 @@ import AlertPopup from "../components/AlertPopup";
 import NotificationButton from "../components/NotificationButton";
 import ForwardingStatus from "../components/ForwardingStatus";
 import WorkflowStatusBadge from "../components/WorkflowStatusBadge";
+import DaysInProgressBadge from "../components/DaysInProgressBadge";
 
 export default function ImportProcessList() {
     let tasks = useLoaderData();
@@ -52,6 +53,7 @@ export default function ImportProcessList() {
                                 <thead className="text-primary">
                                 <tr>
                                     <th>Designação</th>
+                                    <th>Tempo Decorrido</th>
                                     <th>Estado Actual</th>
                                     <th>Avançar Estado</th>
                                     <th>Noficação</th>
@@ -65,7 +67,10 @@ export default function ImportProcessList() {
                                 <tbody>
                                 {taskData.map(task => (<tr key={task.id}>
                                     <td><i className="fa fa-circle mr-2"></i> {task?.taskName}</td>
-                                    <td><i className="fa fa-clock mr-2"></i>
+                                    <td>
+                                        <DaysInProgressBadge task={task}></DaysInProgressBadge>
+                                    </td>
+                                    <td>
                                         <WorkflowStatusBadge task={task}></WorkflowStatusBadge>
 
 

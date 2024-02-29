@@ -15,6 +15,7 @@ import NotificationButton from "./NotificationButton";
 import ForwardingStatus from "./ForwardingStatus";
 import WorkflowStatusBadge from "./WorkflowStatusBadge";
 import CloseImportButton from "./CloseImportButton";
+import DaysInProgressBadge from "./DaysInProgressBadge";
 
 export default function ProcessDetails({processTask, onUpdate}) {
 
@@ -97,7 +98,12 @@ export default function ProcessDetails({processTask, onUpdate}) {
                         <Col><strong>Registo no Sistema: </strong>{format(new Date(task.created), 'dd/MM/yyyy')} </Col>
 
                     </Row>
-                    <Row>
+                    <Row className="mt-2">
+                        <Col>
+
+                            <strong> Tempo Decorrido: </strong> <DaysInProgressBadge task={task}></DaysInProgressBadge>
+                        </Col>
+                        <Col></Col>
 
 
                     </Row>

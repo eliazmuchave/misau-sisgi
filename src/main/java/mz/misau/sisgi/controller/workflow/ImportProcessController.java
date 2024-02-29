@@ -1,10 +1,7 @@
 package mz.misau.sisgi.controller.workflow;
 
 import jakarta.servlet.http.HttpServletRequest;
-import mz.misau.sisgi.dto.workflow.ArrivalAndPickupDateRequest;
-import mz.misau.sisgi.dto.workflow.ImportProcessRequest;
-import mz.misau.sisgi.dto.workflow.ImportProcessResponse;
-import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
+import mz.misau.sisgi.dto.workflow.*;
 import mz.misau.sisgi.service.workflow.ImportProcessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,47 +54,57 @@ public class ImportProcessController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ImportProcessResponse> update(@RequestBody ImportProcessRequest importProcessRequest, @PathVariable Long id){
+    public ResponseEntity<ImportProcessResponse> update(@RequestBody ImportProcessRequest importProcessRequest, @PathVariable Long id) {
         ImportProcessResponse response = importProcessService.update(importProcessRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
 
     @PatchMapping("/updateDates")
-    public ResponseEntity<ImportProcessResponse> updateArrivalAndPickupDate(@RequestBody ArrivalAndPickupDateRequest arrivalAndPickupDateRequest){
+    public ResponseEntity<ImportProcessResponse> updateArrivalAndPickupDate(@RequestBody ArrivalAndPickupDateRequest arrivalAndPickupDateRequest) {
 
-      try{
-          ImportProcessResponse response = importProcessService.updateArrivalAndPickupDate(arrivalAndPickupDateRequest);
+        try {
+            ImportProcessResponse response = importProcessService.updateArrivalAndPickupDate(arrivalAndPickupDateRequest);
 
-          return ResponseEntity.status(HttpStatus.OK).body(response);
-      }catch (Exception e){
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-      }
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PatchMapping("/{id}/notify")
-    public ResponseEntity notifyMeStatusChange(@PathVariable Long id, HttpServletRequest request){
+    public ResponseEntity notifyMeStatusChange(@PathVariable Long id, HttpServletRequest request) {
         String token = request.getHeader("Authorization");
 
-        ImportProcessResponse response =  importProcessService.subscribeStatusChange(id,token);
-        return  ResponseEntity.status(HttpStatus.OK).body(response);
+        ImportProcessResponse response = importProcessService.subscribeStatusChange(id, token);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
 
 
     }
 
     @PatchMapping("/{id}/forwardStatus")
-    public ResponseEntity<ImportProcessResponse> forwardStatus(@PathVariable Long id){
-        ImportProcessResponse importResponse =importProcessService.forwardImportStatus(id);
-        return  ResponseEntity.status(HttpStatus.OK).body(importResponse);
+    public ResponseEntity<ImportProcessResponse> forwardStatus(@PathVariable Long id) {
+        ImportProcessResponse importResponse = importProcessService.forwardImportStatus(id);
+        return ResponseEntity.status(HttpStatus.OK).body(importResponse);
 
 
     }
 
     @PatchMapping("/{id}/close")
-    public ResponseEntity<ImportProcessResponse> cancelImport(@PathVariable Long id){
-        ImportProcessResponse importResponse =importProcessService.closeProcess(id);
-        return  ResponseEntity.status(HttpStatus.OK).body(importResponse);
+    public ResponseEntity<ImportProcessResponse> cancelImport(@PathVariable Long id) {
+        ImportProcessResponse importResponse = importProcessService.closeProcess(id);
+        return ResponseEntity.status(HttpStatus.OK).body(importResponse);
 
 
+    }
+
+    @GetMapping("/totalStatus")
+    public ResponseEntity<ImportProcessTotalsReport> getTotalsByStatus() {
+        return ResponseEntity.ok(importProcessService.countProcessGroupByStatus());
+    }
+
+    @GetMapping("/totalBeneficiary")
+    public ResponseEntity<List<BeneficiaryProcessReport>> getTotalsByBeneficiary() {
+        return ResponseEntity.ok(importProcessService.totalByBeneficiary());
     }
 }

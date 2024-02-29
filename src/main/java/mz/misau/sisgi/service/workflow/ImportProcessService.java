@@ -173,4 +173,13 @@ public class ImportProcessService extends WorkflowTaskService {
 
 
     }
+
+   public ImportProcessTotalsReport countProcessGroupByStatus(){
+
+        return importProcessRepository.countProcessGroupByStatus();
+   }
+
+   public List<BeneficiaryProcessReport> totalByBeneficiary(){
+        return  importProcessRepository.totalByBeneficiary();
+   }
 }

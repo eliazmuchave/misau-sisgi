@@ -182,4 +182,7 @@ public class ImportProcessService extends WorkflowTaskService {
    public List<BeneficiaryProcessReport> totalByBeneficiary(){
         return  importProcessRepository.totalByBeneficiary();
    }
+   public List<FunderTotalReport> totalByFunder(){
+        return  importProcessRepository.totalByFunder();
+   }
 }

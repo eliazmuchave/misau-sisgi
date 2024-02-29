@@ -2,6 +2,7 @@ package mz.misau.sisgi.repository.workflow;
 
 
 import mz.misau.sisgi.dto.workflow.BeneficiaryProcessReport;
+import mz.misau.sisgi.dto.workflow.FunderTotalReport;
 import mz.misau.sisgi.dto.workflow.ImportProcessTotalsReport;
 import mz.misau.sisgi.entity.workflow.ImportProcess;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,6 +25,12 @@ public interface ImportProcessRepository extends JpaRepository<ImportProcess, Lo
             importProcess.beneficiary.name, Count(importProcess.id)) FROM  ImportProcess importProcess GROUP BY importProcess.beneficiary.name                         
             """)
     List<BeneficiaryProcessReport> totalByBeneficiary();
+
+    @Query("""
+            SELECT new mz.misau.sisgi.dto.workflow.FunderTotalReport( 
+            importProcess.financier.name, Count(importProcess.id)) FROM  ImportProcess importProcess GROUP BY importProcess.financier.name                         
+            """)
+    List<FunderTotalReport> totalByFunder();
 }
 
 

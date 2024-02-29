@@ -37,6 +37,7 @@ import {
 } from "variables/charts.js";
 import ImportReportPie from "../components/ImportReportPie";
 import BeneficiaryTotalReport from "../components/BeneficiaryTotalReport";
+import FunderTotalReport from "../components/FunderTotalReport";
 
 function Dashboard() {
     return (
@@ -160,6 +161,9 @@ function Dashboard() {
                     </Col>
                     <Col md="4">
                         <BeneficiaryTotalReport></BeneficiaryTotalReport>
+                    </Col>
+                    <Col md="4">
+                        <FunderTotalReport></FunderTotalReport>
                     </Col>
                 </Row>
             </div>

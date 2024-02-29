@@ -107,4 +107,9 @@ public class ImportProcessController {
     public ResponseEntity<List<BeneficiaryProcessReport>> getTotalsByBeneficiary() {
         return ResponseEntity.ok(importProcessService.totalByBeneficiary());
     }
+
+    @GetMapping("/totalFunder")
+    public ResponseEntity<List<FunderTotalReport>> getTotalsByFunder() {
+        return ResponseEntity.ok(importProcessService.totalByFunder());
+    }
 }

@@ -33,6 +33,18 @@ export default function Status() {
                                             </FormFeedback>
                                         </FormGroup>
 
+                                        <FormGroup>
+                                            <label>Numero de Dias</label>
+                                            <Input name="days" id="days" invalid={errors?.days} min="1" max="90"
+                                                   defaultValue={data ? data.days : ""}
+                                                   type="number"
+                                            />
+                                            <FormFeedback>
+                                                <span><strong>Número de Dias para Complentar</strong> - Valor Inválido</span>
+                                            </FormFeedback>
+                                        </FormGroup>
+
+
                                     </Col>
 
 

@@ -9,6 +9,7 @@ import java.util.List;
 public class PredictedStatusFlowResponse {
     private Long id;
     private String name;
+    private int daysToCompleteTotal;
     private List<StatusResponse> statuses;
     private Date created;
     private Date updated;

@@ -11,6 +11,6 @@ import java.util.List;
 @Data
 public class PredictedStatusFlowRequest {
     private String name;
-
+    private int daysToCompleteTotal;
     private List<Long> statuses;
 }

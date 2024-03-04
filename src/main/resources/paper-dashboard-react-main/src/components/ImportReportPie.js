@@ -1,5 +1,5 @@
 import {Card, CardBody, CardFooter, CardHeader, CardTitle} from "reactstrap";
-import {Pie} from "react-chartjs-2";
+import {Pie,Bar} from "react-chartjs-2";
 import React, {useEffect, useState} from "react";
 import {getAuthorizationToken} from "../util/AccessTokenUtil";
 import {format} from "date-fns";
@@ -29,7 +29,7 @@ export default function ImportReportPie(){
     const dashboardEmailStatisticsChart = {
         data: (canvas) => {
             return {
-                labels: [1, 2, 3],
+                labels: [report.inProgress, report.done, report.closed],
                 datasets: [
                     {
                         label: "Importações",
@@ -44,8 +44,8 @@ export default function ImportReportPie(){
         },
         options: {
             plugins: {
-                legend: { display: false },
-                tooltip: { enabled: false },
+                legend: { display: true },
+                tooltip: { enabled: true },
             },
             maintainAspectRatio: false,
             pieceLabel: {
@@ -57,6 +57,7 @@ export default function ImportReportPie(){
                 y: {
                     ticks: {
                         display: false,
+
                     },
                     grid: {
                         drawBorder: false,
@@ -64,41 +65,42 @@ export default function ImportReportPie(){
                     },
                 },
                 x: {
-                    barPercentage: 1.6,
+                    barPercentage: 1,
                     grid: {
                         drawBorder: false,
                         display: false,
                     },
                     ticks: {
-                        display: false,
+                        display: true,
                     },
                 },
             },
         },
+
     };
     return (
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle tag="h5">Importações</CardTitle>
+                    <CardTitle tag="strong"><div className="stats">Importações - Estados
+                        <i className="fa fa-calendar ml-3"/> {format(new Date(), 'dd/MM/yyyy')}
+                    </div></CardTitle>
 
                 </CardHeader>
-                <CardBody style={{ height: "266px" }}>
-                    <Pie
+                <CardBody style={{height: "220px"}}>
+                    <Bar
                         data={dashboardEmailStatisticsChart.data}
                         options={dashboardEmailStatisticsChart.options}
                     />
                 </CardBody>
                 <CardFooter>
                     <div className="legend">
-                        <i className="fa fa-circle text-primary mr-3" /> Em Andamento{" "}
-                        <i className="fa fa-circle text-warning mr-3" /> Concluídos{" "}
-                        <i className="fa fa-circle text-danger mr-3" /> Encerrados{" "}
+                        <i className="fa fa-circle text-primary mr-1"/> <span className="mr-3">Em Andamento</span>
+                        <i className="fa fa-circle text-warning mr-1"/> <span className="mr-3">Concluídos</span>
+                        <i className="fa fa-circle text-danger mr-1"/> <span className="mr-3">Encerrados</span>
                     </div>
-                    <hr />
-                    <div className="stats">
-                        <i className="fa fa-calendar" /> {format(new Date(), 'dd/MM/yyyy')}
-                    </div>
+                    <hr/>
+
                 </CardFooter>
             </Card>
 

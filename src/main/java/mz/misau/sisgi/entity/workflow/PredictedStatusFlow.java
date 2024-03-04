@@ -26,6 +26,18 @@ public class PredictedStatusFlow extends BaseEntity {
     @JoinTable(name = "status_workflow_join", joinColumns = {@JoinColumn(name = "predicted_state_flow_id")}, inverseJoinColumns = {@JoinColumn(name = "status_id")})
     private List<Status> statuses;
 
+
+    private int daysToCompleteTotal;
+
+    public void setStatuses(List<Status> statuses){
+        this.statuses = statuses;
+        daysToCompleteTotal = getDaysToCompleteTotal();
+    }
+
+    public int getDaysToCompleteTotal(){
+      return  statuses.stream().mapToInt(Status::getDays).sum();
+    }
+
     public int getTotalStatuses() {
 
         return statuses.size();

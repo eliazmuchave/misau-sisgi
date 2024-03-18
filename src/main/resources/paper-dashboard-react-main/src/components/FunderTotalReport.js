@@ -33,10 +33,7 @@ export default function FunderTotalReport(){
                     <Col md="12">
                         <Card>
                             <CardHeader>
-                                <Row>
-                                    <Col md="10"><CardTitle tag="strong">Total por Financiador</CardTitle></Col>
-
-                                </Row>
+                          <CardTitle tag="strong">Total por Financiador</CardTitle>
 
 
                             </CardHeader>
@@ -53,7 +50,7 @@ export default function FunderTotalReport(){
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {report.map(funder => (<tr key={funder.id}>
+                                    {report.map(funder => (<tr key={funder.name}>
                                         <td><i className="fa fa-circle mr-2"></i> {funder?.name}</td>
                                         <td>    {funder?.total}</td>
 

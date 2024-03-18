@@ -7,8 +7,13 @@ import mz.misau.sisgi.dto.workflow.*;
 import mz.misau.sisgi.entity.workflow.*;
 import mz.misau.sisgi.repository.workflow.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cglib.core.Local;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,8 +42,7 @@ public class ImportProcessService extends WorkflowTaskService {
     private static void setNotifiableResponse(ImportProcess importProcess, ImportProcessResponse importProcessResponse) {
         List<NotifiableResponse> notifiableResponses = new ArrayList<>();
 
-        if (importProcess.getNotifiables() == null)
-            return;
+        if (importProcess.getNotifiables() == null) return;
         importProcess.getNotifiables().stream().forEach(notifiable -> {
             NotifiableResponse notifiableResponse = new NotifiableResponse();
             BeanUtils.copyProperties(notifiable, notifiableResponse);
@@ -174,15 +178,36 @@ public class ImportProcessService extends WorkflowTaskService {
 
     }
 
-   public ImportProcessTotalsReport countProcessGroupByStatus(){
+    public ImportProcessTotalsReport countProcessGroupByStatus() {
 
         return importProcessRepository.countProcessGroupByStatus();
-   }
+    }
 
-   public List<BeneficiaryProcessReport> totalByBeneficiary(){
-        return  importProcessRepository.totalByBeneficiary();
-   }
-   public List<FunderTotalReport> totalByFunder(){
-        return  importProcessRepository.totalByFunder();
-   }
+    public List<BeneficiaryProcessReport> totalByBeneficiary() {
+        return importProcessRepository.totalByBeneficiary();
+    }
+
+    public List<FunderTotalReport> totalByFunder() {
+        return importProcessRepository.totalByFunder();
+    }
+
+    public List<ImportProcess> expiresIn(LocalDate startDate,LocalDate endDate) {
+        Date beforeDate = Date.valueOf(endDate);
+        return importProcessRepository.expiredBefore(beforeDate).stream().filter(process -> {
+
+            LocalDate startLocalDate = LocalDate.ofInstant(process.getStartDate().toInstant(), ZoneId.systemDefault());
+            LocalDate plusDays = startLocalDate.plusDays(process.getPredictedStatusFlow().getDaysToCompleteTotal());
+            return plusDays.isAfter(startDate) && plusDays.isBefore(endDate);
+        }).collect(Collectors.toList());
+    }
+
+
+
+    public List<ImportProcessResponse> getThatExpires(LocalDate startDate, LocalDate endDate) {
+
+        List<ImportProcess> processes = expiresIn(startDate, endDate);
+        List<ImportProcessResponse> responses = processes.stream().map(process -> convertToResponse(process)).collect(Collectors.toList());
+        return responses;
+
+    }
 }

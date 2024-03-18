@@ -36,6 +36,14 @@ export default function SettingsNav(){
                 <NavLink className="btn ml-3 btn-link" to="/admin/beneficiaries/new" ><i className="fa fa-plus"></i> Novo Beneficiário</NavLink>
             </NavItem>
 
+            <NavItem>
+                <NavLink className="btn ml-3 btn-link" to="/admin/currencies"><i className="fa fa-table"></i> Moedas</NavLink>
+            </NavItem>
+
+            <NavItem>
+                <NavLink className="btn ml-3 btn-link" to="/admin/currencies/new" ><i className="fa fa-plus"></i> Nova Moeda</NavLink>
+            </NavItem>
+
         </Nav>
     </>);
 }

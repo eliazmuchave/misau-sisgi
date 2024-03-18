@@ -38,14 +38,29 @@ import {
 import ImportReportPie from "../components/ImportReportPie";
 import BeneficiaryTotalReport from "../components/BeneficiaryTotalReport";
 import FunderTotalReport from "../components/FunderTotalReport";
+import ImportExpiresList from "../components/ImportExpiresList";
 
 function Dashboard() {
+    const estiloContainer = {
+        display: 'flex',
+        alignItems: 'stretch',
+        /* Adicione outros estilos conforme necessário */
+    };
     return (
         <>
             <div className="content">
 
-                <Row>
-                    <Col md="12">
+                <Row style={estiloContainer}>
+                    <Col md="4">
+                        <ImportExpiresList title="Processos Atrasados" daysAfter="-90" daysBefore="0"></ImportExpiresList>
+
+                    </Col>
+                    <Col md="4">
+                        <ImportExpiresList title="Processos Atrasados - Últimos 7 Dias" daysAfter="-7" daysBefore="0"></ImportExpiresList>
+
+                    </Col>
+                    <Col md="4">
+                        <ImportExpiresList title="Expirando nos Próximos 7 Dias" daysAfter="1" daysBefore="7"></ImportExpiresList>
 
                     </Col>
                 </Row>

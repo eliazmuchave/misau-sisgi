@@ -34,6 +34,8 @@ import BeneficiariesList, {beneficiariesLoader} from "./views/BeneficiariesList"
 import Beneficiaries, {addBeneficiariesAction, beneficiaryLoader} from "./views/Beneficiaries";
 import ImportProcess, {importProcessAction, importProcessLoader} from "./views/ImportProcess";
 import ImportProcessList, {importProcessListLoader} from "./views/ImportProcessList";
+import Currency, {addCurrencies, currencyAction, currencyLoader} from "./views/Currency";
+import CurrencyList, {currenciesLoader} from "./views/CurrencyList";
 
 
 const router = createBrowserRouter([
@@ -119,6 +121,14 @@ const router = createBrowserRouter([
                     {index: true, element: <ImportProcessList></ImportProcessList>, loader: importProcessListLoader},
                     {path: "new", element:<ImportProcess></ImportProcess>, action: importProcessAction},
                     {path: ":id/edit", element: <ImportProcess></ImportProcess>, action: importProcessAction, loader: importProcessLoader}
+                ]
+            },
+
+            {
+                path: "currencies", children: [
+                    {index: true, element: <CurrencyList></CurrencyList>, loader: currenciesLoader},
+                    {path: "new", element:<Currency></Currency>, action: currencyAction},
+                    {path: ":id/edit", element: <Currency></Currency>, action: currencyAction, loader: currencyLoader}
                 ]
             },
 

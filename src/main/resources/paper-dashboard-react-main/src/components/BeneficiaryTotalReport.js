@@ -42,10 +42,7 @@ export default function BeneficiaryTotalReport() {
                     <Col md="12">
                         <Card>
                             <CardHeader>
-                                <Row>
-                                    <Col md="10"><CardTitle tag="strong">Total por Beneficiário</CardTitle></Col>
-
-                                </Row>
+                               <CardTitle tag="strong">Total por Beneficiário</CardTitle>
 
 
                             </CardHeader>
@@ -62,7 +59,7 @@ export default function BeneficiaryTotalReport() {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {report.map(beneficiary => (<tr key={beneficiary.id}>
+                                    {report.map(beneficiary => (<tr key={beneficiary.beneficiary}>
                                         <td><i className="fa fa-circle mr-2"></i> {beneficiary?.beneficiary}</td>
                                     <td>    {beneficiary?.total}</td>
 

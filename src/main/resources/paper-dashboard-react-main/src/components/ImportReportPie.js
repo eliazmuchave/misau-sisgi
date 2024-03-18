@@ -87,7 +87,7 @@ export default function ImportReportPie(){
                     </div></CardTitle>
 
                 </CardHeader>
-                <CardBody style={{height: "220px"}}>
+                <CardBody >
                     <Bar
                         data={dashboardEmailStatisticsChart.data}
                         options={dashboardEmailStatisticsChart.options}

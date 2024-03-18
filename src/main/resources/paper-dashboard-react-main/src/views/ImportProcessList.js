@@ -56,10 +56,10 @@ export default function ImportProcessList() {
                                     <th>Tempo Decorrido</th>
                                     <th>Estado Actual</th>
                                     <th>Avançar Estado</th>
-                                    <th>Noficação</th>
+                                    <th>Notificação</th>
                                     <th>Data Início</th>
                                     <th>Previsão Término</th>
-                                    <th>Fluxo do Precesso</th>
+                                    <th>Fluxo do Processo</th>
                                     <th>Detalhes</th>
                                     <th></th>
                                 </tr>

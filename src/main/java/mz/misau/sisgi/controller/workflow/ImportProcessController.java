@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -111,5 +112,15 @@ public class ImportProcessController {
     @GetMapping("/totalFunder")
     public ResponseEntity<List<FunderTotalReport>> getTotalsByFunder() {
         return ResponseEntity.ok(importProcessService.totalByFunder());
+    }
+
+    @GetMapping("/expires")
+    public ResponseEntity<List<ImportProcessResponse>> getThatExpiresBeforeDays(@RequestParam("daysAfter") int startDays, @RequestParam("daysBefore") int endDays ){
+
+        LocalDate startDate = LocalDate.now().plusDays(startDays);
+        LocalDate endDate = LocalDate.now().plusDays(endDays);
+
+        return ResponseEntity.ok(importProcessService.getThatExpires(startDate, endDate));
+
     }
 }

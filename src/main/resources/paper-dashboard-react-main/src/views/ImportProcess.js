@@ -150,18 +150,18 @@ export default function ImportProcess() {
 
 
                                         <FormGroup>
-                                            <label>Benefiário</label>
+                                            <label>Beneficiário</label>
                                             <BeneficiarySelect selected={data ? data.beneficiary : emptyData}
                                                                name="beneficiaryId"
                                                                id="benefiaryId"></BeneficiarySelect>
 
                                             <FormFeedback>
-                                                <span><strong>Benficiário não selecionado</strong> Selecione o Beneficiário</span>
+                                                <span><strong>Beneficiário não selecionado</strong> Selecione o Beneficiário</span>
                                             </FormFeedback>
                                         </FormGroup>
 
                                         <FormGroup>
-                                            <label>Financiador</label>
+                                            <label>Financiador/Doador</label>
                                             <FinanciarySelect selected={data ? data.financier : emptyData}
                                                               name="financiaryId"
                                                               id="financiaryId"></FinanciarySelect>

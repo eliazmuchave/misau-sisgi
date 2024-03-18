@@ -16,7 +16,8 @@ export default function DaysInProgressBadge({task}){
             <span>
 
                 <i className="fa fa-clock mr-2"></i>
-                {(task.done || task.closed)? <Badge color = "success"> <strong>{differenceAfterDone()} {differenceAfterDone() != 1? "Dias": "Dia"}</strong></Badge>: null }
+                {task.done? <Badge color = "success"> <strong>{differenceAfterDone()} {differenceAfterDone() != 1? "Dias": "Dia"}</strong></Badge>: null }
+                {task.closed? <Badge color = "danger"> <strong>{differenceAfterDone()} {differenceAfterDone() != 1? "Dias": "Dia"}</strong></Badge>: null }
                 {(!task.done && !task.closed)?  <strong>{differenceInProgress() } {differenceInProgress() != 1? "Dias": "Dia"} </strong>: null }
             </span>
 

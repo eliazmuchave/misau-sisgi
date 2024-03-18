@@ -7,7 +7,9 @@ import mz.misau.sisgi.dto.workflow.ImportProcessTotalsReport;
 import mz.misau.sisgi.entity.workflow.ImportProcess;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ImportProcessRepository extends JpaRepository<ImportProcess, Long> {
@@ -31,6 +33,13 @@ public interface ImportProcessRepository extends JpaRepository<ImportProcess, Lo
             importProcess.financier.name, Count(importProcess.id)) FROM  ImportProcess importProcess GROUP BY importProcess.financier.name                         
             """)
     List<FunderTotalReport> totalByFunder();
+
+    @Query("""
+                        SELECT importProces 
+                        FROM ImportProcess importProces
+                        WHERE  importProces.startDate <= :beforeDate
+            """)
+    List<ImportProcess> expiredBefore(@Param("beforeDate") Date beforeDate);
 }
 
 

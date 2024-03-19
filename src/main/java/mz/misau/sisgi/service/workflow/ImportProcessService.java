@@ -4,6 +4,7 @@ import mz.misau.sisgi.auth.JwtUtil;
 import mz.misau.sisgi.comunication.EmailService;
 import mz.misau.sisgi.comunication.NotificationRepository;
 import mz.misau.sisgi.dto.workflow.*;
+import mz.misau.sisgi.entity.Currency;
 import mz.misau.sisgi.entity.workflow.*;
 import mz.misau.sisgi.repository.workflow.*;
 import org.springframework.beans.BeanUtils;
@@ -29,7 +30,9 @@ public class ImportProcessService extends WorkflowTaskService {
     private final FinancierRepository financierRepository;
     private final GoodsRepository goodsRepository;
 
-    public ImportProcessService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository, JwtUtil jwtUtil, ImportProcessRepository importProcessRepository, BeneficiaryRepository beneficiaryRepository, ForwardingAgentRepository forwardingAgentRepository, FinancierRepository financierRepository, GoodsRepository goodsRepository) {
+    private CurrencyService currencyService;
+
+    public ImportProcessService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository,CurrencyService currencyService,  JwtUtil jwtUtil, ImportProcessRepository importProcessRepository, BeneficiaryRepository beneficiaryRepository, ForwardingAgentRepository forwardingAgentRepository, FinancierRepository financierRepository, GoodsRepository goodsRepository) {
         super(workflowTaskRepository, predictedStatusFlowRepository, emailService, notificationRepository, notifiableRepository, jwtUtil);
         this.importProcessRepository = importProcessRepository;
         this.beneficiaryRepository = beneficiaryRepository;
@@ -37,6 +40,7 @@ public class ImportProcessService extends WorkflowTaskService {
         this.predictedStatusFlowRepository = predictedStatusFlowRepository;
         this.financierRepository = financierRepository;
         this.goodsRepository = goodsRepository;
+        this.currencyService = currencyService;
     }
 
     private static void setNotifiableResponse(ImportProcess importProcess, ImportProcessResponse importProcessResponse) {
@@ -85,6 +89,12 @@ public class ImportProcessService extends WorkflowTaskService {
             PredictedStatusFlow flow = predictedStatusFlowRepository.findById(importProcessRequest.getStatusFlowId()).get();
             importProcess.setPredictedStatusFlow(flow);
         }
+
+        if(importProcessRequest.getCurrencyId() != null){
+            Currency currency = currencyService.getById(importProcessRequest.getCurrencyId());
+            System.out.println(currency);
+            importProcess.setCurrency(currency);
+        }
         importProcessRepository.save(importProcess);
         return convertToResponse(importProcess);
     }
@@ -99,9 +109,24 @@ public class ImportProcessService extends WorkflowTaskService {
 
         setNotifiableResponse(importProcess, importProcessResponse);
 
+        setCurrencyResponse(importProcess, importProcessResponse);
+
         String currentStatus = getCurrentStatusName(importProcess);
         importProcessResponse.setCurrentStatus(currentStatus);
         return importProcessResponse;
+    }
+
+    private static void setCurrencyResponse(ImportProcess importProcess, ImportProcessResponse importProcessResponse) {
+        Currency currency= importProcess.getCurrency();
+        CurrencyResponse currencyResponse = new CurrencyResponse();
+
+        if(currency != null){
+            BeanUtils.copyProperties(currency, currencyResponse);
+
+            importProcessResponse.setCurrencyResponse(currencyResponse);
+        }
+
+
     }
 
     public List<ImportProcess> getAllProcess() {

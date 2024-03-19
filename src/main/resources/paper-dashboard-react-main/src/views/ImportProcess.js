@@ -11,6 +11,7 @@ import BeneficiarySelect from "../components/BeneficiarySelect";
 import FinanciarySelect from "../components/FinanciarySelect";
 import ForwardingAgent from "./ForwardingAgent";
 import AgentSelect from "../components/AgentSelect";
+import CurrencySelect from "../components/CurrencySelect";
 
 export default function ImportProcess() {
 
@@ -78,17 +79,32 @@ export default function ImportProcess() {
                                             </FormFeedback>
                                         </FormGroup>
 
+                                        <Row>
+                                            <Col md="8">
+                                                <FormGroup>
+                                                    <label>Valor</label>
+                                                    <Input name="value" id="value" invalid={errors?.value}
+                                                           defaultValue={data ? data?.value : ""}
+                                                           type="number" step="0.01" min="0"
+                                                    />
+                                                    <FormFeedback>
+                                                        <span><strong>Valor Inválido</strong> - deve ter pelo menos três letras</span>
+                                                    </FormFeedback>
+                                                </FormGroup>
 
-                                        <FormGroup>
-                                            <label>Valor</label>
-                                            <Input name="value" id="value" invalid={errors?.value}
-                                                   defaultValue={data ? data?.value : ""}
-                                                   type="number"
-                                            />
-                                            <FormFeedback>
-                                                <span><strong>Valor Inválido</strong> - deve ter pelo menos três letras</span>
-                                            </FormFeedback>
-                                        </FormGroup>
+                                            </Col>
+                                            <Col md="4">
+                                                <FormGroup>
+                                                    <label>Moeda</label>
+                                                    <CurrencySelect name = "currencyId" id = "currencyId"></CurrencySelect>
+                                                    <FormFeedback>
+                                                        <span><strong>Valor Inválido</strong> - deve ter pelo menos três letras</span>
+                                                    </FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+
+
+                                        </Row>
 
 
                                         <FormGroup>

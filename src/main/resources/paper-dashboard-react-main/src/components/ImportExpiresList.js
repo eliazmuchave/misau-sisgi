@@ -57,6 +57,7 @@ export default function ImportExpiresList({title, daysBefore, daysAfter}) {
                             <Row>
 
                             </Row>
+                            <div style={{maxHeight: '400px', overflowY: 'auto'}}>
                             <Table responsive>
                                 <thead className="text-primary">
                                 <tr>
@@ -87,6 +88,7 @@ export default function ImportExpiresList({title, daysBefore, daysAfter}) {
 
                                 </tbody>
                             </Table>
+                            </div>
                         </CardBody>
                     </Card>
                 </Col>

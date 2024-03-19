@@ -22,6 +22,7 @@ export default function ProcessDetails({processTask, onUpdate}) {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
+    console.log(processTask);
 
     const [task, setTask] = useState(processTask);
 
@@ -67,7 +68,7 @@ export default function ProcessDetails({processTask, onUpdate}) {
                     </Row>
                     <Row className="mt-2">
                         <Col> <strong>Quantidade: </strong> {task.quantity}</Col>
-                        <Col><strong>Valor: </strong> {`${task.value} ${task.currency}`} </Col>
+                        <Col><strong>Valor: </strong> {task?.value} {task.currencyResponse? task.currencyResponse.symbol: ""}  </Col>
 
                     </Row>
 

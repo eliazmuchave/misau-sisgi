@@ -40,4 +40,10 @@ public class CurrencyService {
         BeanUtils.copyProperties(request, currency);
         return currency;
     }
+
+    public Currency getById(Long currencyId) {
+
+      Currency currency =  currencyRepository.findById(currencyId).orElseThrow();
+      return currency;
+    }
 }

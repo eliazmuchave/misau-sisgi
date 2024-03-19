@@ -38,6 +38,8 @@ public interface ImportProcessRepository extends JpaRepository<ImportProcess, Lo
                         SELECT importProces 
                         FROM ImportProcess importProces
                         WHERE  importProces.startDate <= :beforeDate
+                        AND importProces.done = false
+                        AND importProces.closed = false
             """)
     List<ImportProcess> expiredBefore(@Param("beforeDate") Date beforeDate);
 }

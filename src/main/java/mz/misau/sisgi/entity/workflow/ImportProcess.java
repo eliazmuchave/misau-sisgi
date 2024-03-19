@@ -2,6 +2,7 @@ package mz.misau.sisgi.entity.workflow;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import mz.misau.sisgi.entity.Currency;
 
 import java.util.Date;
 
@@ -18,9 +19,6 @@ public class ImportProcess extends WorkflowTask {
 
     @Column(name = "value")
     private Double value;
-
-    @Column(name = "currency")
-    private String currency;
 
     @Column(name = "quantity")
     private int quantity;
@@ -49,4 +47,8 @@ public class ImportProcess extends WorkflowTask {
     @ManyToOne
     @JoinColumn(name = "financier_id")
     private Financier financier;
+
+    @ManyToOne
+    @JoinColumn(name = "currency_id")
+    private Currency currency;
 }

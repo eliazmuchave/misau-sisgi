@@ -37,5 +37,7 @@ public class ImportProcessRequest {
     private Long beneficiaryId;
 
     private Long financiaryId;
+
+    private Long currencyId;
 }
 

@@ -24,7 +24,7 @@ public class ImportProcessResponse {
     private String processNumber;
     private String invoice;
     private Double value;
-    private String currency;
+
     private int quantity;
     private Date arrivalForecast;
     private Date arrivalDate;
@@ -37,4 +37,5 @@ public class ImportProcessResponse {
     private Beneficiary beneficiary;
     private Financier financier;
     private List<NotifiableResponse> notifiables;
+    private CurrencyResponse currencyResponse;
 }

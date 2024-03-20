@@ -145,6 +145,11 @@ public class ImportProcessService extends WorkflowTaskService {
 
     }
 
+    public ImportProcess findById(Long id) {
+        return importProcessRepository.findById(id).get();
+
+    }
+
     public ImportProcessResponse update(ImportProcessRequest importProcessRequest, Long id) {
 
         ImportProcess importProcess = importProcessRepository.findById(id).get();

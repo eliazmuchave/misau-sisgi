@@ -16,13 +16,12 @@ import ForwardingStatus from "./ForwardingStatus";
 import WorkflowStatusBadge from "./WorkflowStatusBadge";
 import CloseImportButton from "./CloseImportButton";
 import DaysInProgressBadge from "./DaysInProgressBadge";
+import Comment from "./Comment";
 
 export default function ProcessDetails({processTask, onUpdate}) {
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-
-    console.log(processTask);
 
     const [task, setTask] = useState(processTask);
 
@@ -42,14 +41,15 @@ export default function ProcessDetails({processTask, onUpdate}) {
                     className=" fa fa-info fa-solid"></i>
             </Button>
             <Modal className={modalCss.detailsModal} isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>
+                <ModalHeader toggle={toggle} style={{fontSize: 10}}>
 
-                    <span className="mr-3"> {task.taskName}</span>
+                    <span className="mr-3"> <strong>{task.taskName} </strong></span>
+                    {" - "}
 
                     <WorkflowStatusBadge task={task}></WorkflowStatusBadge>
 
                 </ModalHeader>
-                <ModalBody>
+                <ModalBody style={{fontSize: 13}}>
                     <Row className="mt-1">
 
                         <Col> <strong>Nome: </strong> {task.taskName}</Col>
@@ -114,14 +114,19 @@ export default function ProcessDetails({processTask, onUpdate}) {
 
 
                 </ModalBody>
+                <ModalBody>
+                    <Comment task={task}></Comment>
+                </ModalBody>
 
 
                 <ModalFooter>
+
                     <CloseImportButton task={task} onUpdate={handleUpdate}></CloseImportButton>
                     <NotificationButton task={task} onUpdate={handleUpdate}></NotificationButton>
                     <ForwardingStatus task={task} onUpdate={handleUpdate}></ForwardingStatus>
 
                 </ModalFooter>
+
             </Modal>
         </>
     );

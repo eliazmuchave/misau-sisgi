@@ -9,10 +9,7 @@ import mz.misau.sisgi.comunication.NotificationRepository;
 import mz.misau.sisgi.dto.workflow.PredictedStatusFlowResponse;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskRequest;
 import mz.misau.sisgi.dto.workflow.WorkflowTaskResponse;
-import mz.misau.sisgi.entity.workflow.Notifiable;
-import mz.misau.sisgi.entity.workflow.PredictedStatusFlow;
-import mz.misau.sisgi.entity.workflow.Status;
-import mz.misau.sisgi.entity.workflow.WorkflowTask;
+import mz.misau.sisgi.entity.workflow.*;
 import mz.misau.sisgi.repository.workflow.NotifiableRepository;
 import mz.misau.sisgi.repository.workflow.PredictedStatusFlowRepository;
 import mz.misau.sisgi.repository.workflow.WorkflowTaskRepository;
@@ -34,14 +31,16 @@ public class WorkflowTaskService {
     private final EmailService emailService;
     private final NotificationRepository notificationRepository;
     private final NotifiableRepository notifiableRepository;
+    private final LogProcessStatusService logService;
     private final JwtUtil jwtUtil;
 
-    public WorkflowTaskService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository, JwtUtil jwtUtil) {
+    public WorkflowTaskService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository, LogProcessStatusService logService, JwtUtil jwtUtil) {
         this.workflowTaskRepository = workflowTaskRepository;
         this.predictedStatusFlowRepository = predictedStatusFlowRepository;
         this.emailService = emailService;
         this.notificationRepository = notificationRepository;
         this.notifiableRepository = notifiableRepository;
+        this.logService = logService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -120,9 +119,17 @@ public class WorkflowTaskService {
     }
 
     public WorkflowTaskResponse forwardStatus(Long id) {
+
         WorkflowTask task = workflowTaskRepository.findById(id).orElseThrow();
+
+       String currentStatus = getCurrentStatusName(task);
+
         task.forwardStatus();
         save(task);
+
+        String newStatus = getCurrentStatusName(task);
+
+        logService.addLog(currentStatus, newStatus, id);
         notifyStatusChange(task);
         return convertFromEntity(task);
 

@@ -32,8 +32,8 @@ public class ImportProcessService extends WorkflowTaskService {
 
     private CurrencyService currencyService;
 
-    public ImportProcessService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository,CurrencyService currencyService,  JwtUtil jwtUtil, ImportProcessRepository importProcessRepository, BeneficiaryRepository beneficiaryRepository, ForwardingAgentRepository forwardingAgentRepository, FinancierRepository financierRepository, GoodsRepository goodsRepository) {
-        super(workflowTaskRepository, predictedStatusFlowRepository, emailService, notificationRepository, notifiableRepository, jwtUtil);
+    public ImportProcessService(WorkflowTaskRepository workflowTaskRepository, PredictedStatusFlowRepository predictedStatusFlowRepository, EmailService emailService, NotificationRepository notificationRepository, NotifiableRepository notifiableRepository,CurrencyService currencyService,LogProcessStatusService logService,  JwtUtil jwtUtil, ImportProcessRepository importProcessRepository, BeneficiaryRepository beneficiaryRepository, ForwardingAgentRepository forwardingAgentRepository, FinancierRepository financierRepository, GoodsRepository goodsRepository) {
+        super(workflowTaskRepository, predictedStatusFlowRepository, emailService, notificationRepository, notifiableRepository,logService, jwtUtil);
         this.importProcessRepository = importProcessRepository;
         this.beneficiaryRepository = beneficiaryRepository;
         this.forwardingAgentRepository = forwardingAgentRepository;

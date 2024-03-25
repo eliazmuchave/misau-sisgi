@@ -15,7 +15,7 @@ export default function ImportExpiresList({title, daysBefore, daysAfter}) {
     const [taskData, setTaskData] = useState([]);
     const token = getAuthorizationToken();
     const url = `/api/importProcess/expires?daysBefore=${daysBefore}&daysAfter=${daysAfter}`;
-    console.log(url);
+
     useEffect(() => {
         const loadData = async () => {
             const response = await fetch(url,

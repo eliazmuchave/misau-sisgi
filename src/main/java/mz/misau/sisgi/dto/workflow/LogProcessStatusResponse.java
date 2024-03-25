@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class LogProcessStatusResponse {
+    private Long id;
     private String currentStatus;
     private String newStatus;
     private Long processId;

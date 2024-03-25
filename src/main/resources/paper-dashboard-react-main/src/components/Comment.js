@@ -83,11 +83,11 @@ export default function Comment({task}) {
                     </Form>
 
                     {
-                        comments.map(comment => (
-                            <li key={comment.id} style={{listStyleType: "none"}}>
+                        comments.map((comment,index )=> (
+                            <li key={index} style={{listStyleType: "none"}}>
 
 
-                                <Row className="mt-3" key={comment.id}>
+                                <Row className="mt-3"  >
                                     <Col md="12">
                                         <div style={{display: "flex"}} className="mb-2">
                                         <Badge color="dark" pill className="mr-4">{comment.user}</Badge>

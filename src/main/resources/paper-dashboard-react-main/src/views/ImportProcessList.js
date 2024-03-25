@@ -10,6 +10,7 @@ import NotificationButton from "../components/NotificationButton";
 import ForwardingStatus from "../components/ForwardingStatus";
 import WorkflowStatusBadge from "../components/WorkflowStatusBadge";
 import DaysInProgressBadge from "../components/DaysInProgressBadge";
+import ProcessStatusDetails from "../components/ProcessStatusDetails";
 
 export default function ImportProcessList() {
     let tasks = useLoaderData();
@@ -68,7 +69,16 @@ export default function ImportProcessList() {
                                 {taskData.map(task => (<tr key={task.id}>
                                     <td><i className="fa fa-circle mr-2"></i> {task?.taskName}</td>
                                     <td>
-                                        <DaysInProgressBadge task={task}></DaysInProgressBadge>
+                                        <Row className="mr-4">
+                                            <Col md="8">
+                                                <DaysInProgressBadge task={task}></DaysInProgressBadge>
+
+                                            </Col>
+                                            <Col md="4">
+                                                <ProcessStatusDetails task = {task}></ProcessStatusDetails>
+                                            </Col>
+                                        </Row>
+
                                     </td>
                                     <td>
                                         <WorkflowStatusBadge task={task}></WorkflowStatusBadge>

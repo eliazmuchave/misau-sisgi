@@ -43,12 +43,9 @@ public class WorkflowTask extends BaseEntity {
 
     public void forwardStatus() {
 
-        if (currentStatus <= predictedStatusFlow.getTotalStatuses()) {
-            currentStatus += 1;
+        currentStatus += 1;
 
-        }
-
-        if (currentStatus == predictedStatusFlow.getTotalStatuses()) {
+        if (currentStatus > predictedStatusFlow.getTotalStatuses()) {
             done = true;
         }
 

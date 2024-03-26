@@ -80,24 +80,44 @@ public class WorkflowTaskService {
     }
 
     protected String getCurrentStatusName(WorkflowTask workflowTask) {
-        int currentStatus = workflowTask.getCurrentStatus();
+    LogProcessStatus log = logService.getMostRecentStatusOf(workflowTask);
+    if (log == null)
+        return "";
+    return log.getStatus();
+
+    }
+
+    protected void forwardStatus(WorkflowTask workflowTask) {
+
         PredictedStatusFlow predictedStatusFlow = workflowTask.getPredictedStatusFlow();
+
         if (predictedStatusFlow != null) {
             List<Status> statuses = predictedStatusFlow.getStatuses();
             try {
                 if (statuses != null && !statuses.isEmpty()) {
-                    int length = statuses.size() - 1;
-                    if (length >= currentStatus) {
-                        return statuses.get(currentStatus).getNameStatus();
-                    }
-                    return statuses.get(length).getNameStatus();
+
+
+                        Status status = predictedStatusFlow.getStatuses().get(workflowTask.getCurrentStatus());
+                        workflowTaskRepository.save(workflowTask);
+                        logService.addStatus(workflowTask, status);
+
+
+                    workflowTask.forwardStatus();
+                    workflowTaskRepository.save(workflowTask);
+
+
+
                 }
 
             } catch (IndexOutOfBoundsException e) {
+                workflowTask.setDone(true);
+                workflowTaskRepository.save(workflowTask);
+
+
             }
 
         }
-        return "Não Iniciado";
+
     }
 
     public WorkflowTask convertToEntity(WorkflowTaskRequest workflowTaskRequest) {
@@ -122,14 +142,8 @@ public class WorkflowTaskService {
 
         WorkflowTask task = workflowTaskRepository.findById(id).orElseThrow();
 
-       String currentStatus = getCurrentStatusName(task);
+        forwardStatus(task);
 
-        task.forwardStatus();
-        save(task);
-
-        String newStatus = getCurrentStatusName(task);
-
-        logService.addLog(currentStatus, newStatus, id);
         notifyStatusChange(task);
         return convertFromEntity(task);
 
@@ -166,7 +180,7 @@ public class WorkflowTaskService {
     }
 
     public void notifyMe(@NotNull WorkflowTask workflowTask, @Email String userEmail) {
-              Notifiable notifiable = new Notifiable();
+        Notifiable notifiable = new Notifiable();
         notifiable.setWorkflowTask(workflowTask);
         notifiable.setEmail(userEmail);
         notifiableRepository.save(notifiable);

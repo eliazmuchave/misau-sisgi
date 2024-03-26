@@ -92,10 +92,10 @@ public class ImportProcessService extends WorkflowTaskService {
 
         if(importProcessRequest.getCurrencyId() != null){
             Currency currency = currencyService.getById(importProcessRequest.getCurrencyId());
-            System.out.println(currency);
             importProcess.setCurrency(currency);
         }
         importProcessRepository.save(importProcess);
+        forwardStatus(importProcess);
         return convertToResponse(importProcess);
     }
 

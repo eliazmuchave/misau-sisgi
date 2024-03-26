@@ -11,4 +11,7 @@ public class LogProcessStatusResponse {
     private String newStatus;
     private Long processId;
     private Date created;
+    private Date startDate;
+    private Date endDate;
+    private int expectedDays;
 }

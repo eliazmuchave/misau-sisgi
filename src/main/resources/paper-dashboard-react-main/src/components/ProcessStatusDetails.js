@@ -31,12 +31,22 @@ export default function ProcessStatusDetails({task}) {
             });
 
             const fetchedLogs = await response.json();
-            console.log(fetchedLogs);
+
             setLogs(fetchedLogs);
         }
 
         loadLogs();
     }, []);
+
+    const differencesDays = (log) =>{
+        const startDate = log.startDate;
+        const endDate = log.endDate;
+        if(startDate && endDate) {
+            const diff = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
+            return Math.floor(diff);
+        }
+
+    }
 
     return <>
         <Button className="btn-default btn btn-sm" onClick={toggle}>
@@ -62,19 +72,26 @@ export default function ProcessStatusDetails({task}) {
                         <thead className="text-primary font-weight-bold">
 
 
-                            <td>Estado do Processo</td>
+                        <td>Estado do Processo</td>
 
-                            <td>Data Início</td>
+                        <td>Data Início</td>
+                        <td>Data Conclusão</td>
+                        <td>Tempo Previsto </td>
+                        <td>Tempo Execução</td>
+
 
                         </thead>
                         <tbody>
                         {logs.map(log => (
-                            <tr key = {log.id}>
+                            <tr key={log.id}>
 
                                 <td>
-                                    {log.newStatus === log.currentStatus? "Concluido": log.newStatus}
+                                    {log.status}
                                 </td>
-                                <td> {format(new Date(log.created), 'dd/MM/yyyy')}</td>
+                                <td> {format(new Date(log.startDate), 'dd/MM/yyyy')}</td>
+                                <td>{log.endDate? format(new Date(log.endDate), 'dd/MM/yyyy'): ""}</td>
+                                <td> {log.expectedDays}</td>
+                                <td>{differencesDays(log)}  </td>
 
                             </tr>))}
                         </tbody>

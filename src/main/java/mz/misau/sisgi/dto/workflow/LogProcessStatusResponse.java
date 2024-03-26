@@ -7,9 +7,7 @@ import java.util.Date;
 @Data
 public class LogProcessStatusResponse {
     private Long id;
-    private String currentStatus;
-    private String newStatus;
-    private Long processId;
+    private String status;
     private Date created;
     private Date startDate;
     private Date endDate;

@@ -32,13 +32,25 @@ public class LogProcessStatusService {
 
     public void addStatus(WorkflowTask workflowTask, Status status){
 
+
         LogProcessStatus log = new LogProcessStatus();
         log.setStatus(status.getNameStatus());
         log.setStartDate(new Date());
         log.setExpectedDays(status.getDays());
         log.setWorkflowTask(workflowTask);
 
+        closeCurrentStatusOf(workflowTask);
         logProcessStatusRepository.save(log);
+
+    }
+
+    public void closeCurrentStatusOf(WorkflowTask task){
+
+       LogProcessStatus log = getMostRecentStatusOf(task);
+       if (log != null){
+           log.setEndDate(new Date());
+           logProcessStatusRepository.save(log);
+       }
 
     }
 
